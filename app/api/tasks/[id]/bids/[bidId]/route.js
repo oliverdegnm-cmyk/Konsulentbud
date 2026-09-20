@@ -22,12 +22,12 @@ export async function DELETE(request, { params }) {
       return NextResponse.json({ error: "Buddet findes ikke." }, { status: 404 });
     }
     if (bidRows[0].bidder_name !== requesterName?.trim()) {
-      return NextResponse.json({ error: "Du kan kun trække dine egne bud tilbage." }, { status: 403 });
+      return NextResponse.json({ error: "Du kan kun trække dine egne forslag tilbage." }, { status: 403 });
     }
 
     await pool.query("DELETE FROM bids WHERE id = $1", [bidId]);
     return NextResponse.json({ ok: true });
   } catch (err) {
-    return NextResponse.json({ error: "Kunne ikke trække buddet tilbage." }, { status: 500 });
+    return NextResponse.json({ error: "Kunne ikke trække forslaget tilbage." }, { status: 500 });
   }
 }

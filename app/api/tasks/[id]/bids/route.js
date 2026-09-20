@@ -26,7 +26,7 @@ export async function POST(request, { params }) {
       return NextResponse.json({ error: "Opgaven findes ikke." }, { status: 404 });
     }
     if (taskRows[0].status !== "open") {
-      return NextResponse.json({ error: "Opgaven er allerede tildelt og modtager ikke flere bud." }, { status: 400 });
+      return NextResponse.json({ error: "Opgaven er allerede tildelt og modtager ikke flere forslag." }, { status: 400 });
     }
 
     // Kræver Stripe forbundet, før man kan byde - så vinderen altid rent faktisk
@@ -34,7 +34,7 @@ export async function POST(request, { params }) {
     const { rows: profileRows } = await pool.query("SELECT stripe_payouts_enabled FROM profiles WHERE name = $1", [bidderName.trim()]);
     if (!profileRows[0]?.stripe_payouts_enabled) {
       return NextResponse.json(
-        { error: "Du skal forbinde Stripe under din profil, før du kan afgive bud - så er du sikker på at kunne modtage betaling, hvis du vinder." },
+        { error: "Du skal forbinde Stripe under din profil, før du kan sende et forslag - så er du sikker på at kunne modtage betaling, hvis du vinder." },
         { status: 400 }
       );
     }
@@ -45,7 +45,7 @@ export async function POST(request, { params }) {
       [id, bidderName.trim(), formatKr(amountValue), amountValue, message?.trim() || "Ingen besked tilføjet.", contactEmail?.trim() || null]
     );
 
-    await notify(taskRows[0].posted_by, "new_bid", id, `${bidderName.trim()} bød ${formatKr(amountValue)} på "${taskRows[0].title}".`);
+    await notify(taskRows[0].posted_by, "new_bid", id, `${bidderName.trim()} sendte et forslag på ${formatKr(amountValue)} til "${taskRows[0].title}".`);
 
     const b = rows[0];
     return NextResponse.json(
@@ -53,6 +53,6 @@ export async function POST(request, { params }) {
       { status: 201 }
     );
   } catch (err) {
-    return NextResponse.json({ error: "Kunne ikke afgive bud." }, { status: 500 });
+    return NextResponse.json({ error: "Kunne ikke sende forslag." }, { status: 500 });
   }
 }

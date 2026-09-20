@@ -11,7 +11,7 @@ export async function POST(request, { params }) {
     const { bidId, requesterName } = body;
 
     if (!bidId || !requesterName?.trim()) {
-      return NextResponse.json({ error: "Mangler bud eller navn." }, { status: 400 });
+      return NextResponse.json({ error: "Mangler forslag eller navn." }, { status: 400 });
     }
 
     const { rows: taskRows } = await pool.query("SELECT * FROM tasks WHERE id = $1", [id]);
@@ -21,7 +21,7 @@ export async function POST(request, { params }) {
     const task = taskRows[0];
 
     if (task.posted_by !== requesterName.trim()) {
-      return NextResponse.json({ error: "Kun opgavestilleren kan vælge et bud." }, { status: 403 });
+      return NextResponse.json({ error: "Kun opgavestilleren kan vælge et forslag." }, { status: 403 });
     }
     if (task.status !== "open") {
       return NextResponse.json({ error: "Opgaven er allerede tildelt." }, { status: 400 });
@@ -43,7 +43,7 @@ export async function POST(request, { params }) {
     const profile = profileRows[0];
     if (!profile?.stripe_account_id || !profile.stripe_payouts_enabled) {
       return NextResponse.json(
-        { error: `${bid.bidder_name} har ikke forbundet en betalingsmodtagende Stripe-konto endnu. Bed dem forbinde Stripe under deres profil, før du kan vælge buddet.` },
+        { error: `${bid.bidder_name} har ikke forbundet en betalingsmodtagende Stripe-konto endnu. Bed dem forbinde Stripe under deres profil, før du kan vælge forslaget.` },
         { status: 400 }
       );
     }

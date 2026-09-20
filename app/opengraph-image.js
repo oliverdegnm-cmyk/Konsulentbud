@@ -49,7 +49,7 @@ export default async function Image() {
           Danmarks platform for konsulentopgaver
         </div>
         <div style={{ display: "flex", gap: 14, marginTop: 44 }}>
-          {["Strategi", "IT & digitalisering", "Økonomi & finans", "AI & automatisering"].map((tag) => (
+          {["Strategi", "Digital transformation", "Økonomi & finans", "AI-strategi"].map((tag) => (
             <div
               key={tag}
               style={{

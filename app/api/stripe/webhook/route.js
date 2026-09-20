@@ -39,7 +39,7 @@ export async function POST(request) {
 
         const { rows: bidRows } = await pool.query("SELECT bidder_name FROM bids WHERE id = $1", [bidId]);
         if (bidRows[0]) {
-          await notify(bidRows[0].bidder_name, "bid_accepted", taskId, `Dit bud på "${task.title}" er valgt, og betalingen holdes klar til udbetaling.`);
+          await notify(bidRows[0].bidder_name, "bid_accepted", taskId, `Dit forslag på "${task.title}" er valgt, og betalingen holdes klar til udbetaling.`);
         }
       } else {
         console.error("Stripe webhook - opgave matchede ikke forventet tilstand:", { taskId, bidId, taskStatus: task?.status, pendingBidId: task?.pending_bid_id });

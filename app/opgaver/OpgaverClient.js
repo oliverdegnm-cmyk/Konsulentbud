@@ -160,7 +160,7 @@ export default function OpgaverPage() {
           style={{ fontSize: 13.5, padding: "10px 14px", border: "1.5px solid #E4E8F0", borderRadius: 10, background: "#fff", cursor: "pointer" }}
         >
           <option value="newest">Nyeste først</option>
-          <option value="fewbids">Færrest bud</option>
+          <option value="fewbids">Færrest forslag</option>
           <option value="lowbudget">Laveste budget</option>
           <option value="highbudget">Højeste budget</option>
         </select>

@@ -146,7 +146,7 @@ function PostTaskPage() {
     <div>
       <h2 style={{ fontSize: 24, marginTop: 24, marginBottom: 6 }}>Opret en opgave</h2>
       <p style={{ color: "#5B6478", fontSize: 14, marginBottom: 24 }}>
-        Beskriv opgaven klart, så bydere ved præcis, hvad de byder på. Det er gratis at oprette.
+        Beskriv opgaven klart, så konsulenterne ved præcis, hvad de skal give forslag på. Det er gratis at oprette.
       </p>
       <div style={{ background: "#fff", border: "1.5px solid #E4E8F0", borderRadius: 20, padding: 30, maxWidth: 660 }}>
         <div style={{ marginBottom: 20 }}>

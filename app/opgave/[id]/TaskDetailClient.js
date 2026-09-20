@@ -117,7 +117,7 @@ export default function TaskDetailClient() {
 
   async function submitBid() {
     if (!amount.trim()) {
-      setError("Angiv et beløb, før du afgiver dit bud.");
+      setError("Angiv et beløb, før du sender dit forslag.");
       return;
     }
     setError("");
@@ -200,7 +200,7 @@ export default function TaskDetailClient() {
   async function withdrawFromTask() {
     const reason = prompt("Vil du kort skrive hvorfor du trækker dig? (valgfrit - opgavestilleren ser beskeden)");
     if (reason === null) return; // brugeren fortrød i selve prompten
-    if (!confirm("Sikker på du vil trække dig fra opgaven? Betalingen refunderes til opgavestilleren, og opgaven bliver åben for nye bud igen.")) return;
+    if (!confirm("Sikker på du vil trække dig fra opgaven? Betalingen refunderes til opgavestilleren, og opgaven bliver åben for nye forslag igen.")) return;
     setActionError("");
     const res = await fetch(`/api/tasks/${id}/withdraw`, {
       method: "POST",
@@ -222,7 +222,7 @@ export default function TaskDetailClient() {
   }
 
   async function withdrawBid(bidId) {
-    if (!confirm("Træk dit bud tilbage?")) return;
+    if (!confirm("Træk dit forslag tilbage?")) return;
     setActionError("");
     const res = await fetch(`/api/tasks/${id}/bids/${bidId}?requesterName=${encodeURIComponent(name)}`, { method: "DELETE" });
     const data = await res.json();
@@ -326,7 +326,7 @@ export default function TaskDetailClient() {
           </div>
           {isAcceptedBidder && myFee && (
             <div style={{ fontSize: 13, color: "#146B4E", lineHeight: 1.6 }}>
-              Buddet var på {formatKr(acceptedBid.amountValue)}. Som <b>{myFee.level.label}</b>-hjælper ({myFee.level.feePercent}% servicegebyr) {isCompleted ? "modtog" : "modtager"} du ca. <b>{formatKr(myFee.net)}</b>.
+              Prisen var {formatKr(acceptedBid.amountValue)}. Som <b>{myFee.level.label}</b>-hjælper ({myFee.level.feePercent}% servicegebyr) {isCompleted ? "modtog" : "modtager"} du ca. <b>{formatKr(myFee.net)}</b>.
             </div>
           )}
           {task.paymentStatus === "held" && (
@@ -500,7 +500,7 @@ export default function TaskDetailClient() {
           </div>
 
           <div style={{ marginTop: 30 }}>
-            <h3 style={{ fontSize: 15, marginBottom: 14 }}>Bud ({task.bids.length})</h3>
+            <h3 style={{ fontSize: 15, marginBottom: 14 }}>Forslag ({task.bids.length})</h3>
             {isOwner && task.status === "open" && task.bids.length > 0 && (
               <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: "#5B6478", marginBottom: 16 }}>
                 <ShieldCheck size={13} color="#7C3AED" style={{ flex: "0 0 auto" }} />
@@ -513,7 +513,7 @@ export default function TaskDetailClient() {
                 </span>
               </div>
             )}
-            {task.bids.length === 0 && <p style={{ fontSize: 13.5, color: "#5B6478" }}>Ingen bud endnu. Vær den første.</p>}
+            {task.bids.length === 0 && <p style={{ fontSize: 13.5, color: "#5B6478" }}>Ingen forslag endnu. Vær den første.</p>}
             {task.bids.map((b, i) => {
               const canChat = isOwner || b.bidderName === name;
               const isTheAcceptedOne = (isMatched || isCompleted) && task.acceptedBidId === b.id;
@@ -571,7 +571,7 @@ export default function TaskDetailClient() {
                             disabled={checkingOut === b.id}
                             style={{ fontSize: 12.5, fontWeight: 700, padding: "8px 14px", borderRadius: 8, border: "1.5px solid #7C3AED", background: "#fff", color: "#7C3AED", cursor: checkingOut === b.id ? "default" : "pointer", opacity: checkingOut === b.id ? 0.6 : 1 }}
                           >
-                            {checkingOut === b.id ? "Åbner betaling…" : "Vælg og betal for dette bud"}
+                            {checkingOut === b.id ? "Åbner betaling…" : "Vælg og betal for dette forslag"}
                           </button>
                         )}
                         {canChat && !isTheAcceptedOne && (
@@ -587,7 +587,7 @@ export default function TaskDetailClient() {
                             onClick={() => withdrawBid(b.id)}
                             style={{ fontSize: 12.5, fontWeight: 700, padding: "8px 14px", borderRadius: 8, border: "1.5px solid #FDECEC", background: "#fff", color: "#C0392B", cursor: "pointer" }}
                           >
-                            Træk bud tilbage
+                            Træk forslag tilbage
                           </button>
                         )}
                       </div>
@@ -595,8 +595,11 @@ export default function TaskDetailClient() {
                         <MessageThread taskId={task.id} bidderName={b.bidderName} currentName={name} />
                       )}
                     </div>
-                    <div style={{ fontWeight: 800, fontSize: 14.5, whiteSpace: "nowrap", color: b.bidderName === name ? "#7C3AED" : "#241C35" }}>
-                      {formatBudgetDisplay(b.amount)}
+                    <div style={{ textAlign: "right", whiteSpace: "nowrap" }}>
+                      <div style={{ fontSize: 10.5, fontWeight: 700, color: "#9AA2B1", textTransform: "uppercase", letterSpacing: "0.03em", marginBottom: 2 }}>Pris</div>
+                      <div style={{ fontWeight: 700, fontSize: 13.5, color: b.bidderName === name ? "#7C3AED" : "#5B6478" }}>
+                        {formatBudgetDisplay(b.amount)}
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -609,12 +612,12 @@ export default function TaskDetailClient() {
           <h3 style={{ fontSize: 15, marginBottom: 16 }}>Budget: {formatBudgetDisplay(task.budget)}</h3>
           {task.status !== "open" ? (
             <p style={{ fontSize: 13.5, color: "#5B6478", lineHeight: 1.6 }}>
-              Denne opgave modtager ikke flere bud.
+              Denne opgave modtager ikke flere forslag.
             </p>
           ) : !name ? (
             <div>
               <p style={{ fontSize: 13.5, color: "#5B6478", lineHeight: 1.6, marginBottom: 14 }}>
-                Log ind for at afgive et bud på denne opgave.
+                Log ind for at sende et forslag på denne opgave.
               </p>
               <Link
                 href="/login"
@@ -626,7 +629,7 @@ export default function TaskDetailClient() {
           ) : myLevel && !myLevel.stripePayoutsEnabled && task.postedBy !== name ? (
             <div>
               <p style={{ fontSize: 13.5, color: "#5B6478", lineHeight: 1.6, marginBottom: 14 }}>
-                Du skal forbinde Stripe, før du kan afgive bud - så er du sikker på at kunne modtage betaling, hvis du vinder.
+                Du skal forbinde Stripe, før du kan sende et forslag - så er du sikker på at kunne modtage betaling, hvis du vinder.
               </p>
               <Link
                 href="/betalinger"
@@ -637,7 +640,7 @@ export default function TaskDetailClient() {
             </div>
           ) : (
             <>
-              <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: "#5B6478", marginBottom: 6 }}>Dit bud (kr)</label>
+              <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: "#5B6478", marginBottom: 6 }}>Din pris (kr)</label>
               <input
                 type="number"
                 min="1"
@@ -649,7 +652,7 @@ export default function TaskDetailClient() {
               {myLevel && amount && !isNaN(Number(amount)) && Number(amount) > 0 && (
                 <div style={{ fontSize: 12, color: "#5B6478", marginTop: 6 }}>
                   Som {myLevel.level.label}-hjælper ({myLevel.level.feePercent}% gebyr) modtager du ca.{" "}
-                  <b>{formatKr(feeBreakdown(Number(amount), myLevel.earnings30d, myLevel.completionRate).net)}</b> hvis buddet vælges.
+                  <b>{formatKr(feeBreakdown(Number(amount), myLevel.earnings30d, myLevel.completionRate).net)}</b> hvis forslaget vælges.
                 </div>
               )}
               <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: "#5B6478", margin: "14px 0 6px" }}>Besked til opgavestiller</label>
@@ -663,7 +666,7 @@ export default function TaskDetailClient() {
                 onClick={submitBid}
                 style={{ width: "100%", marginTop: 16, fontSize: 14.5, fontWeight: 700, padding: "12px 22px", borderRadius: 12, border: "none", background: "#7C3AED", color: "#fff", cursor: "pointer" }}
               >
-                Afgiv bud
+                Send forslag
               </button>
               {error && (
                 <div style={{ marginTop: 14, padding: "11px 14px", borderRadius: 10, fontSize: 12.5, fontWeight: 700, background: "#FDECEC", color: "#C0392B" }}>
@@ -672,7 +675,7 @@ export default function TaskDetailClient() {
               )}
               {ok && (
                 <div style={{ marginTop: 14, padding: "11px 14px", borderRadius: 10, fontSize: 12.5, fontWeight: 700, background: "#E9F9F1", color: "#1AA37A" }}>
-                  ✓ Bud afgivet og gemt.
+                  ✓ Forslag sendt og gemt.
                 </div>
               )}
             </>
