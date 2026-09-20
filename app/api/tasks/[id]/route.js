@@ -30,6 +30,10 @@ function mapFullTask(t, bidRows, attRows, revealAddress) {
     address: revealAddress ? t.address : null,
     lat: t.lat,
     lng: t.lng,
+    experienceLevel: t.experience_level,
+    engagementType: t.engagement_type,
+    scope: t.scope,
+    industryKnowledge: t.industry_knowledge,
     attachments: (attRows || []).map((a) => ({ id: a.id, url: a.url, filename: a.filename })),
     bids: bidRows.map((b) => ({
       id: b.id,
@@ -85,7 +89,7 @@ export async function PATCH(request, { params }) {
     await ensureSchema();
     const id = Number(params.id);
     const body = await request.json();
-    const { requesterName, title, category, budget, deadline, deadlineDate, description, area, locationType, address, newAttachments, posterType, companyName } = body;
+    const { requesterName, title, category, budget, deadline, deadlineDate, description, area, locationType, address, newAttachments, posterType, companyName, experienceLevel, engagementType, scope, industryKnowledge } = body;
 
     const { rows: taskRows } = await pool.query("SELECT * FROM tasks WHERE id = $1", [id]);
     if (taskRows.length === 0) {
@@ -111,8 +115,8 @@ export async function PATCH(request, { params }) {
     if (!isInPerson) coords = { lat: null, lng: null };
 
     const { rows } = await pool.query(
-      `UPDATE tasks SET title = $1, category = $2, budget = $3, deadline = $4, deadline_date = $5, description = $6, area = $7, lat = $8, lng = $9, poster_type = $10, company_name = $11, location_type = $12, address = $13
-       WHERE id = $14 RETURNING *`,
+      `UPDATE tasks SET title = $1, category = $2, budget = $3, deadline = $4, deadline_date = $5, description = $6, area = $7, lat = $8, lng = $9, poster_type = $10, company_name = $11, location_type = $12, address = $13, experience_level = $14, engagement_type = $15, scope = $16, industry_knowledge = $17
+       WHERE id = $18 RETURNING *`,
       [
         title.trim(),
         category || task.category,
@@ -127,6 +131,10 @@ export async function PATCH(request, { params }) {
         posterType === "business" ? companyName?.trim() || null : null,
         isInPerson ? "in_person" : "remote",
         isInPerson ? address?.trim() || null : null,
+        experienceLevel?.trim() || null,
+        engagementType?.trim() || null,
+        scope?.trim() || null,
+        industryKnowledge?.trim() || null,
         id,
       ]
     );

@@ -27,6 +27,10 @@ function mapTask(row, bids, attachments) {
     locationType: row.location_type,
     lat: row.lat,
     lng: row.lng,
+    experienceLevel: row.experience_level,
+    engagementType: row.engagement_type,
+    scope: row.scope,
+    industryKnowledge: row.industry_knowledge,
     createdAt: row.created_at,
     attachments: (attachments || []).map((a) => ({ id: a.id, url: a.url, filename: a.filename })),
     bids: bids.map((b) => ({
@@ -96,7 +100,7 @@ export async function POST(request) {
   try {
     await ensureSchema();
     const body = await request.json();
-    const { title, category, budget, deadline, deadlineDate, description, postedBy, area, locationType, address, attachments, posterType, companyName, cvrNumber } = body;
+    const { title, category, budget, deadline, deadlineDate, description, postedBy, area, locationType, address, attachments, posterType, companyName, cvrNumber, experienceLevel, engagementType, scope, industryKnowledge } = body;
 
     if (!title?.trim() || !description?.trim() || !postedBy?.trim()) {
       return NextResponse.json({ error: "Titel, beskrivelse og navn er påkrævet." }, { status: 400 });
@@ -108,8 +112,8 @@ export async function POST(request) {
     const coords = locationType === "in_person" ? await geocodeArea(area) : null;
 
     const { rows } = await pool.query(
-      `INSERT INTO tasks (case_no, title, category, budget, deadline, deadline_date, description, posted_by, area, lat, lng, poster_type, company_name, cvr_number, location_type, address)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16) RETURNING *`,
+      `INSERT INTO tasks (case_no, title, category, budget, deadline, deadline_date, description, posted_by, area, lat, lng, poster_type, company_name, cvr_number, location_type, address, experience_level, engagement_type, scope, industry_knowledge)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19, $20) RETURNING *`,
       [
         "midlertidig",
         title.trim(),
@@ -127,6 +131,10 @@ export async function POST(request) {
         posterType === "business" ? cvrNumber?.replace(/\D/g, "") || null : null,
         locationType === "in_person" ? "in_person" : "remote",
         locationType === "in_person" ? address?.trim() || null : null,
+        experienceLevel?.trim() || null,
+        engagementType?.trim() || null,
+        scope?.trim() || null,
+        industryKnowledge?.trim() || null,
       ]
     );
     const task = rows[0];

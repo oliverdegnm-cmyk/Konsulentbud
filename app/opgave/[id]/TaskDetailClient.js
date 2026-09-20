@@ -11,6 +11,7 @@ import Stars from "@/components/Stars";
 import { useName } from "@/lib/NameContext";
 import { feeBreakdown, formatKr, formatBudgetDisplay } from "@/lib/fees";
 import { statusInfo, getDeadlineLabel, capitalizeFirst } from "@/lib/status";
+import { experienceLabel, engagementLabel } from "@/lib/consultantCriteria";
 import { shortDisplayName } from "@/lib/displayName";
 
 function initials(name) {
@@ -453,6 +454,30 @@ export default function TaskDetailClient() {
           </div>
           <h2 style={{ fontSize: 22, lineHeight: 1.25, marginBottom: 12 }}>{capitalizeFirst(task.title)}</h2>
           <p style={{ fontSize: 14, color: "#5B6478", lineHeight: 1.7 }}>{task.description}</p>
+          {(experienceLabel(task.experienceLevel) || engagementLabel(task.engagementType) || task.scope || task.industryKnowledge) && (
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 16 }}>
+              {experienceLabel(task.experienceLevel) && (
+                <span style={{ fontSize: 12, fontWeight: 700, color: "#5B21B6", background: "#F3EEFC", padding: "6px 12px", borderRadius: 999 }}>
+                  {experienceLabel(task.experienceLevel)}
+                </span>
+              )}
+              {engagementLabel(task.engagementType) && (
+                <span style={{ fontSize: 12, fontWeight: 700, color: "#5B21B6", background: "#F3EEFC", padding: "6px 12px", borderRadius: 999 }}>
+                  {engagementLabel(task.engagementType)}
+                </span>
+              )}
+              {task.scope && (
+                <span style={{ fontSize: 12, fontWeight: 700, color: "#5B6478", background: "#F5F7FB", padding: "6px 12px", borderRadius: 999 }}>
+                  Omfang: {task.scope}
+                </span>
+              )}
+              {task.industryKnowledge && (
+                <span style={{ fontSize: 12, fontWeight: 700, color: "#5B6478", background: "#F5F7FB", padding: "6px 12px", borderRadius: 999 }}>
+                  Branche: {task.industryKnowledge}
+                </span>
+              )}
+            </div>
+          )}
           {task.attachments && task.attachments.length > 0 && (
             <div style={{ display: "flex", flexDirection: "column", gap: 8, marginTop: 16 }}>
               {task.attachments.map((a) => (

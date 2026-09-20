@@ -4,6 +4,7 @@ import RequireAuth from "@/components/RequireAuth";
 import { useState, useRef } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { CATS, matchCategoryFromText } from "@/lib/categories";
+import { EXPERIENCE_LEVELS, ENGAGEMENT_TYPES } from "@/lib/consultantCriteria";
 import { useName } from "@/lib/NameContext";
 import FileUploader from "@/components/FileUploader";
 
@@ -74,6 +75,10 @@ function PostTaskPage() {
   const [cvrStatus, setCvrStatus] = useState(null); // null | "loading" | "found" | "error"
   const [cvrError, setCvrError] = useState("");
   const [description, setDescription] = useState(searchParams.get("description") || "");
+  const [experienceLevel, setExperienceLevel] = useState("");
+  const [engagementType, setEngagementType] = useState("");
+  const [scope, setScope] = useState("");
+  const [industryKnowledge, setIndustryKnowledge] = useState("");
   const [attachments, setAttachments] = useState([]);
   const [error, setError] = useState("");
   const [okId, setOkId] = useState("");
@@ -128,6 +133,10 @@ function PostTaskPage() {
           posterType,
           companyName,
           cvrNumber,
+          experienceLevel,
+          engagementType,
+          scope,
+          industryKnowledge,
         }),
       });
       const data = await res.json();
@@ -358,7 +367,7 @@ function PostTaskPage() {
                   style={{ width: "100%", fontSize: 14, padding: "12px 14px", border: "1.5px solid #E4E8F0", borderRadius: 10, background: "#F5F7FB" }}
                 />
                 <div style={{ fontSize: 11.5, color: "#9AA2B1", marginTop: 6 }}>
-                  Den præcise adresse vises kun til den hjælper, hvis bud du vælger - ikke offentligt.
+                  Den præcise adresse vises kun til den konsulent, hvis forslag du vælger - ikke offentligt.
                 </div>
               </>
             )}
@@ -368,10 +377,82 @@ function PostTaskPage() {
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Beskriv opgaven, omfang og eventuelle systemer eller filer bydere skal kende til."
+              placeholder="Beskriv opgaven, omfang og eventuelle systemer eller filer konsulenten skal kende til."
               style={{ width: "100%", minHeight: 110, fontSize: 14, padding: "12px 14px", border: "1.5px solid #E4E8F0", borderRadius: 10, background: "#F5F7FB", resize: "vertical" }}
             />
           </div>
+
+          <div style={{ gridColumn: "1 / -1", marginTop: 6, paddingTop: 20, borderTop: "1px solid #E4E8F0" }}>
+            <div style={{ fontSize: 13, fontWeight: 800, marginBottom: 3 }}>Hvilken slags konsulent søger du?</div>
+            <div style={{ fontSize: 12, color: "#9AA2B1", marginBottom: 14 }}>Valgfrit - gør det nemmere for konsulenter at vurdere, om de er et match.</div>
+          </div>
+          <div>
+            <label style={{ display: "block", fontSize: 12.5, fontWeight: 700, color: "#5B6478", marginBottom: 8 }}>Erfaringsniveau (valgfrit)</label>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+              {EXPERIENCE_LEVELS.map((e) => (
+                <button
+                  key={e.value}
+                  type="button"
+                  onClick={() => setExperienceLevel(experienceLevel === e.value ? "" : e.value)}
+                  style={{
+                    padding: "8px 14px",
+                    borderRadius: 999,
+                    fontSize: 12.5,
+                    fontWeight: 700,
+                    border: experienceLevel === e.value ? "1.5px solid #7C3AED" : "1.5px solid #E4E8F0",
+                    background: experienceLevel === e.value ? "#F3EEFC" : "#fff",
+                    color: experienceLevel === e.value ? "#5B21B6" : "#5B6478",
+                    cursor: "pointer",
+                  }}
+                >
+                  {e.label}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div>
+            <label style={{ display: "block", fontSize: 12.5, fontWeight: 700, color: "#5B6478", marginBottom: 8 }}>Engagementstype (valgfrit)</label>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+              {ENGAGEMENT_TYPES.map((e) => (
+                <button
+                  key={e.value}
+                  type="button"
+                  onClick={() => setEngagementType(engagementType === e.value ? "" : e.value)}
+                  style={{
+                    padding: "8px 14px",
+                    borderRadius: 999,
+                    fontSize: 12.5,
+                    fontWeight: 700,
+                    border: engagementType === e.value ? "1.5px solid #7C3AED" : "1.5px solid #E4E8F0",
+                    background: engagementType === e.value ? "#F3EEFC" : "#fff",
+                    color: engagementType === e.value ? "#5B21B6" : "#5B6478",
+                    cursor: "pointer",
+                  }}
+                >
+                  {e.label}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div>
+            <label style={{ display: "block", fontSize: 12.5, fontWeight: 700, color: "#5B6478", marginBottom: 6 }}>Omfang (valgfrit)</label>
+            <input
+              value={scope}
+              onChange={(e) => setScope(e.target.value)}
+              placeholder="f.eks. ca. 10 timer/uge, eller fuld tid i en periode"
+              style={{ width: "100%", fontSize: 14, padding: "12px 14px", border: "1.5px solid #E4E8F0", borderRadius: 10, background: "#F5F7FB" }}
+            />
+          </div>
+          <div>
+            <label style={{ display: "block", fontSize: 12.5, fontWeight: 700, color: "#5B6478", marginBottom: 6 }}>Branchekendskab (valgfrit)</label>
+            <input
+              value={industryKnowledge}
+              onChange={(e) => setIndustryKnowledge(e.target.value)}
+              placeholder="f.eks. kendskab til e-handel er et plus"
+              style={{ width: "100%", fontSize: 14, padding: "12px 14px", border: "1.5px solid #E4E8F0", borderRadius: 10, background: "#F5F7FB" }}
+            />
+          </div>
+
           <div style={{ gridColumn: "1 / -1" }}>
             <label style={{ display: "block", fontSize: 12.5, fontWeight: 700, color: "#5B6478", marginBottom: 6 }}>Vedhæftninger (valgfrit)</label>
             <FileUploader files={attachments} setFiles={setAttachments} />
@@ -390,7 +471,7 @@ function PostTaskPage() {
         )}
         {okId && (
           <div style={{ marginTop: 14, padding: "11px 14px", borderRadius: 10, fontSize: 12.5, fontWeight: 700, background: "#E9F9F1", color: "#1AA37A" }}>
-            ✓ Opgave oprettet som {okId} og synlig for alle bydere.
+            ✓ Opgave oprettet som {okId} og synlig for alle konsulenter.
           </div>
         )}
       </div>
