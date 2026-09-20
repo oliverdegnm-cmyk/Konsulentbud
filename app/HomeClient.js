@@ -169,8 +169,11 @@ export default function HomePage() {
               {heroWord}
             </span>
           </h1>
-          <p style={{ fontSize: 16, color: "#5B6478", margin: "18px 0 22px", maxWidth: 460, lineHeight: 1.6 }}>
+          <p style={{ fontSize: 16, color: "#5B6478", margin: "18px 0 8px", maxWidth: 460, lineHeight: 1.6 }}>
             Beskriv opgaven, sæt et budget, og modtag bud fra dygtige konsulenter.
+          </p>
+          <p style={{ fontSize: 13.5, color: "#9AA2B1", margin: "0 0 22px", maxWidth: 460, lineHeight: 1.6 }}>
+            For virksomheder og privatpersoner, der har brug for ekstern konsulentbistand - fra en enkeltstående opgave til et længere forløb.
           </p>
           <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
             <Link
