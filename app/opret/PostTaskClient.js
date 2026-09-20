@@ -263,7 +263,7 @@ function PostTaskPage() {
             <input
               value={title}
               onChange={(e) => handleTitleChange(e.target.value)}
-              placeholder="f.eks. Bogfør kvartalsregnskab for Q3"
+              placeholder="f.eks. Erfaren ledelseskonsulent søges til 3 ugers strategiprojekt"
               style={{ width: "100%", fontSize: 14, padding: "12px 14px", border: "1.5px solid #E4E8F0", borderRadius: 10, background: "#F5F7FB" }}
             />
           </div>
@@ -411,6 +411,10 @@ function PostTaskPage() {
               style={{ width: "100%", minHeight: 110, fontSize: 14, padding: "12px 14px", border: "1.5px solid #E4E8F0", borderRadius: 10, background: "#F5F7FB", resize: "vertical" }}
             />
           </div>
+          <div style={{ gridColumn: "1 / -1" }}>
+            <label style={{ display: "block", fontSize: 12.5, fontWeight: 700, color: "#5B6478", marginBottom: 6 }}>Vedhæftninger (valgfrit)</label>
+            <FileUploader files={attachments} setFiles={setAttachments} />
+          </div>
 
           <div style={{ gridColumn: "1 / -1", marginTop: 6, paddingTop: 20, borderTop: "1px solid #E4E8F0" }}>
             <div style={{ fontSize: 13, fontWeight: 800, marginBottom: 3 }}>Hvilken slags konsulent søger du?</div>
@@ -469,7 +473,7 @@ function PostTaskPage() {
             <input
               value={scope}
               onChange={(e) => setScope(e.target.value)}
-              placeholder="f.eks. ca. 10 timer/uge, eller fuld tid i en periode"
+              placeholder="f.eks. 10 timer/uge"
               style={{ width: "100%", fontSize: 14, padding: "12px 14px", border: "1.5px solid #E4E8F0", borderRadius: 10, background: "#F5F7FB" }}
             />
           </div>
@@ -481,11 +485,6 @@ function PostTaskPage() {
               placeholder="f.eks. kendskab til e-handel er et plus"
               style={{ width: "100%", fontSize: 14, padding: "12px 14px", border: "1.5px solid #E4E8F0", borderRadius: 10, background: "#F5F7FB" }}
             />
-          </div>
-
-          <div style={{ gridColumn: "1 / -1" }}>
-            <label style={{ display: "block", fontSize: 12.5, fontWeight: 700, color: "#5B6478", marginBottom: 6 }}>Vedhæftninger (valgfrit)</label>
-            <FileUploader files={attachments} setFiles={setAttachments} />
           </div>
         </div>
         <button

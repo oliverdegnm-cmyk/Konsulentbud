@@ -276,6 +276,25 @@ export default function EditTaskPage() {
             <label style={{ display: "block", fontSize: 12.5, fontWeight: 700, color: "#5B6478", marginBottom: 6 }}>Beskrivelse</label>
             <textarea value={description} onChange={(e) => setDescription(e.target.value)} style={{ width: "100%", minHeight: 110, fontSize: 14, padding: "12px 14px", border: "1.5px solid #E4E8F0", borderRadius: 10, background: "#F5F7FB", resize: "vertical" }} />
           </div>
+          <div style={{ gridColumn: "1 / -1" }}>
+            <label style={{ display: "block", fontSize: 12.5, fontWeight: 700, color: "#5B6478", marginBottom: 6 }}>Vedhæftninger</label>
+            {existingAttachments.length > 0 && (
+              <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 10 }}>
+                {existingAttachments.map((a) => (
+                  <a
+                    key={a.id}
+                    href={a.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12.5, fontWeight: 600, color: "#7C3AED", background: "#F5F7FB", padding: "8px 12px", borderRadius: 8, width: "fit-content" }}
+                  >
+                    <FileText size={13} /> {a.filename}
+                  </a>
+                ))}
+              </div>
+            )}
+            <FileUploader files={newAttachments} setFiles={setNewAttachments} />
+          </div>
 
           <div style={{ gridColumn: "1 / -1", marginTop: 6, paddingTop: 20, borderTop: "1px solid #E4E8F0" }}>
             <div style={{ fontSize: 13, fontWeight: 800, marginBottom: 3 }}>Hvilken slags konsulent søger du?</div>
@@ -334,7 +353,7 @@ export default function EditTaskPage() {
             <input
               value={scope}
               onChange={(e) => setScope(e.target.value)}
-              placeholder="f.eks. ca. 10 timer/uge"
+              placeholder="f.eks. 10 timer/uge"
               style={{ width: "100%", fontSize: 14, padding: "12px 14px", border: "1.5px solid #E4E8F0", borderRadius: 10, background: "#F5F7FB" }}
             />
           </div>
@@ -346,26 +365,6 @@ export default function EditTaskPage() {
               placeholder="f.eks. kendskab til e-handel er et plus"
               style={{ width: "100%", fontSize: 14, padding: "12px 14px", border: "1.5px solid #E4E8F0", borderRadius: 10, background: "#F5F7FB" }}
             />
-          </div>
-
-          <div style={{ gridColumn: "1 / -1" }}>
-            <label style={{ display: "block", fontSize: 12.5, fontWeight: 700, color: "#5B6478", marginBottom: 6 }}>Vedhæftninger</label>
-            {existingAttachments.length > 0 && (
-              <div style={{ display: "flex", flexDirection: "column", gap: 6, marginBottom: 10 }}>
-                {existingAttachments.map((a) => (
-                  <a
-                    key={a.id}
-                    href={a.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12.5, fontWeight: 600, color: "#7C3AED", background: "#F5F7FB", padding: "8px 12px", borderRadius: 8, width: "fit-content" }}
-                  >
-                    <FileText size={13} /> {a.filename}
-                  </a>
-                ))}
-              </div>
-            )}
-            <FileUploader files={newAttachments} setFiles={setNewAttachments} />
           </div>
         </div>
         <button
