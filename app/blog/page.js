@@ -30,7 +30,7 @@ export default function BlogIndexPage() {
             href={`/blog/${post.slug}`}
             style={{ display: "block", background: "#fff", border: "1.5px solid #E4E8F0", borderRadius: 18, padding: "22px 24px" }}
           >
-            <div style={{ fontSize: 11.5, fontWeight: 700, color: "#2A55E5", marginBottom: 8 }}>{post.category}</div>
+            <div style={{ fontSize: 11.5, fontWeight: 700, color: "#7C3AED", marginBottom: 8 }}>{post.category}</div>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <h2 style={{ fontSize: 17, fontWeight: 800, margin: "0 0 6px" }}>{post.title}</h2>

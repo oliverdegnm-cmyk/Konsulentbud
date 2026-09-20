@@ -98,7 +98,7 @@ export default function OpgaverPage() {
               fontSize: 13,
               fontWeight: 700,
               cursor: "pointer",
-              background: statusFilter === f.key ? "#2A55E5" : "transparent",
+              background: statusFilter === f.key ? "#7C3AED" : "transparent",
               color: statusFilter === f.key ? "#fff" : "#5B6478",
             }}
           >
@@ -123,7 +123,7 @@ export default function OpgaverPage() {
               fontSize: 13,
               fontWeight: 700,
               cursor: "pointer",
-              background: posterFilter === f.key ? "#2A55E5" : "transparent",
+              background: posterFilter === f.key ? "#7C3AED" : "transparent",
               color: posterFilter === f.key ? "#fff" : "#5B6478",
             }}
           >
@@ -172,8 +172,8 @@ export default function OpgaverPage() {
             padding: "10px 16px",
             borderRadius: 10,
             border: "1.5px solid #E4E8F0",
-            background: onlyWithLocation ? "#EEF2FF" : "#fff",
-            color: onlyWithLocation ? "#1B3AA6" : "#5B6478",
+            background: onlyWithLocation ? "#F3EEFC" : "#fff",
+            color: onlyWithLocation ? "#5B21B6" : "#5B6478",
             cursor: "pointer",
           }}
         >
@@ -181,7 +181,7 @@ export default function OpgaverPage() {
         </button>
         <button
           onClick={() => setShowMap(!showMap)}
-          style={{ fontSize: 13.5, fontWeight: 700, padding: "10px 16px", borderRadius: 10, border: "1.5px solid #E4E8F0", background: showMap ? "#EEF2FF" : "#fff", color: showMap ? "#1B3AA6" : "#5B6478", cursor: "pointer" }}
+          style={{ fontSize: 13.5, fontWeight: 700, padding: "10px 16px", borderRadius: 10, border: "1.5px solid #E4E8F0", background: showMap ? "#F3EEFC" : "#fff", color: showMap ? "#5B21B6" : "#5B6478", cursor: "pointer" }}
         >
           {showMap ? "Skjul kort" : "Vis kort"}
         </button>
@@ -189,9 +189,9 @@ export default function OpgaverPage() {
 
       {list.length === 0 ? (
         <div style={{ padding: "50px 10px", textAlign: "center", color: "#5B6478" }}>
-          <div style={{ fontSize: 16, fontWeight: 700, color: "#14213D", marginBottom: 6 }}>Ingen opgaver matcher</div>
+          <div style={{ fontSize: 16, fontWeight: 700, color: "#241C35", marginBottom: 6 }}>Ingen opgaver matcher</div>
           <div style={{ fontSize: 13.5 }}>
-            Prøv en anden søgning eller kategori, eller <Link href="/opret" style={{ color: "#2A55E5", fontWeight: 700 }}>opret en opgave</Link>.
+            Prøv en anden søgning eller kategori, eller <Link href="/opret" style={{ color: "#7C3AED", fontWeight: 700 }}>opret en opgave</Link>.
           </div>
         </div>
       ) : (
@@ -222,8 +222,8 @@ export default function OpgaverPage() {
                       width: 42,
                       height: 42,
                       borderRadius: 12,
-                      background: "#EEF2FF",
-                      color: "#2A55E5",
+                      background: "#F3EEFC",
+                      color: "#7C3AED",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
@@ -244,7 +244,7 @@ export default function OpgaverPage() {
                     <div style={{ fontSize: 12.5, color: "#5B6478" }}>
                       {t.category}
                       {" · "}
-                      <span style={{ display: "inline-flex", alignItems: "center", gap: 3, fontWeight: 700, color: t.deadline === "Fleksibel" ? "#1AA37A" : getDeadlineLabel(t).urgent ? "#C0392B" : "#14213D" }}>
+                      <span style={{ display: "inline-flex", alignItems: "center", gap: 3, fontWeight: 700, color: t.deadline === "Fleksibel" ? "#1AA37A" : getDeadlineLabel(t).urgent ? "#C0392B" : "#241C35" }}>
                         <Clock size={12} /> {getDeadlineLabel(t).text}
                       </span>
                       {t.area ? ` · 📍 ${t.area}` : ""}
@@ -262,7 +262,7 @@ export default function OpgaverPage() {
                         <Link
                           href={`/bruger/${encodeURIComponent(t.postedBy)}`}
                           onClick={(e) => e.stopPropagation()}
-                          style={{ fontSize: 13, fontWeight: 700, color: "#2A55E5", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: 130 }}
+                          style={{ fontSize: 13, fontWeight: 700, color: "#7C3AED", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: 130 }}
                         >
                           {shortDisplayName(t.postedBy)}
                         </Link>

@@ -9,7 +9,7 @@ const TRUSTPILOT_URL = "https://www.trustpilot.com/review/konsulentbud.dk";
 
 export default function Footer() {
   return (
-    <footer style={{ background: "#14213D", borderRadius: 24, padding: "40px 36px", margin: "60px 0 24px", color: "#fff" }}>
+    <footer style={{ background: "#241C35", borderRadius: 24, padding: "40px 36px", margin: "60px 0 24px", color: "#fff" }}>
       <div style={{ display: "grid", gridTemplateColumns: "1.3fr 1fr 1fr", gap: 32 }} className="kb-grid-3">
         <div>
           <div style={{ fontSize: 15, fontWeight: 800, marginBottom: 12 }}>Konsulentbud</div>

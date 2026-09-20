@@ -43,8 +43,8 @@ export default function TaskCarousel({ tasks }) {
                     width: 32,
                     height: 32,
                     borderRadius: 9,
-                    background: "#EEF2FF",
-                    color: "#2A55E5",
+                    background: "#F3EEFC",
+                    color: "#7C3AED",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -60,7 +60,7 @@ export default function TaskCarousel({ tasks }) {
               {t.completedByName && (
                 <div style={{ borderTop: "1px solid #F0F1F5", marginTop: 2, paddingTop: 8 }}>
                   <div style={{ fontSize: 10.5, color: "#9AA2B1", fontWeight: 600 }}>Udført af</div>
-                  <div style={{ fontSize: 12.5, fontWeight: 700, color: "#14213D", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{shortDisplayName(t.completedByName)}</div>
+                  <div style={{ fontSize: 12.5, fontWeight: 700, color: "#241C35", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{shortDisplayName(t.completedByName)}</div>
                   <div style={{ fontSize: 11, color: "#5B6478", marginTop: 2 }}>
                     {t.completedByReviewCount > 0 ? (
                       <span style={{ display: "inline-flex", alignItems: "center", gap: 3 }}>

@@ -39,7 +39,7 @@ async function optimizeImage(file, maxDim = 1920, quality = 0.85) {
 function Badge({ children, tone }) {
   const tones = {
     open: { bg: "#FFF1E0", color: "#B5610E" },
-    matched: { bg: "#EEF2FF", color: "#1B3AA6" },
+    matched: { bg: "#F3EEFC", color: "#5B21B6" },
     completed: { bg: "#E9F9F1", color: "#146B4E" },
     cancelled: { bg: "#F5F7FB", color: "#5B6478" },
   };
@@ -149,7 +149,7 @@ function AdminPageInner() {
   return (
     <div style={{ marginTop: 24, marginBottom: 60 }}>
       <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}>
-        <ShieldCheck size={20} color="#2A55E5" />
+        <ShieldCheck size={20} color="#7C3AED" />
         <h2 style={{ fontSize: 24, fontWeight: 800 }}>Admin</h2>
       </div>
       <p style={{ color: "#5B6478", fontSize: 14, marginBottom: 24 }}>Overblik til kundeservice - alle opgaver og brugere, uanset status.</p>
@@ -157,31 +157,31 @@ function AdminPageInner() {
       <div style={{ display: "flex", gap: 6, marginBottom: 22, background: "#F5F7FB", borderRadius: 10, padding: 4, width: "fit-content" }}>
         <button
           onClick={() => setTab("tasks")}
-          style={{ padding: "8px 18px", borderRadius: 8, border: "none", fontSize: 13.5, fontWeight: 700, cursor: "pointer", background: tab === "tasks" ? "#2A55E5" : "transparent", color: tab === "tasks" ? "#fff" : "#5B6478" }}
+          style={{ padding: "8px 18px", borderRadius: 8, border: "none", fontSize: 13.5, fontWeight: 700, cursor: "pointer", background: tab === "tasks" ? "#7C3AED" : "transparent", color: tab === "tasks" ? "#fff" : "#5B6478" }}
         >
           Opgaver
         </button>
         <button
           onClick={() => setTab("users")}
-          style={{ padding: "8px 18px", borderRadius: 8, border: "none", fontSize: 13.5, fontWeight: 700, cursor: "pointer", background: tab === "users" ? "#2A55E5" : "transparent", color: tab === "users" ? "#fff" : "#5B6478" }}
+          style={{ padding: "8px 18px", borderRadius: 8, border: "none", fontSize: 13.5, fontWeight: 700, cursor: "pointer", background: tab === "users" ? "#7C3AED" : "transparent", color: tab === "users" ? "#fff" : "#5B6478" }}
         >
           Brugere
         </button>
         <button
           onClick={() => setTab("contact")}
-          style={{ padding: "8px 18px", borderRadius: 8, border: "none", fontSize: 13.5, fontWeight: 700, cursor: "pointer", background: tab === "contact" ? "#2A55E5" : "transparent", color: tab === "contact" ? "#fff" : "#5B6478" }}
+          style={{ padding: "8px 18px", borderRadius: 8, border: "none", fontSize: 13.5, fontWeight: 700, cursor: "pointer", background: tab === "contact" ? "#7C3AED" : "transparent", color: tab === "contact" ? "#fff" : "#5B6478" }}
         >
           Kontakt
         </button>
         <button
           onClick={() => setTab("images")}
-          style={{ padding: "8px 18px", borderRadius: 8, border: "none", fontSize: 13.5, fontWeight: 700, cursor: "pointer", background: tab === "images" ? "#2A55E5" : "transparent", color: tab === "images" ? "#fff" : "#5B6478" }}
+          style={{ padding: "8px 18px", borderRadius: 8, border: "none", fontSize: 13.5, fontWeight: 700, cursor: "pointer", background: tab === "images" ? "#7C3AED" : "transparent", color: tab === "images" ? "#fff" : "#5B6478" }}
         >
           Billeder
         </button>
         <button
           onClick={() => setTab("support")}
-          style={{ padding: "8px 18px", borderRadius: 8, border: "none", fontSize: 13.5, fontWeight: 700, cursor: "pointer", background: tab === "support" ? "#2A55E5" : "transparent", color: tab === "support" ? "#fff" : "#5B6478" }}
+          style={{ padding: "8px 18px", borderRadius: 8, border: "none", fontSize: 13.5, fontWeight: 700, cursor: "pointer", background: tab === "support" ? "#7C3AED" : "transparent", color: tab === "support" ? "#fff" : "#5B6478" }}
         >
           Support
         </button>
@@ -197,7 +197,7 @@ function AdminPageInner() {
             tasks.map((t) => (
               <div key={t.id} style={{ display: "flex", alignItems: "center", gap: 14, background: "#fff", border: "1.5px solid #E4E8F0", borderRadius: 14, padding: "14px 18px" }}>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <Link href={`/opgave/${t.id}`} style={{ fontWeight: 700, fontSize: 13.5, color: "#14213D" }}>
+                  <Link href={`/opgave/${t.id}`} style={{ fontWeight: 700, fontSize: 13.5, color: "#241C35" }}>
                     {t.title}
                   </Link>
                   <div style={{ fontSize: 11.5, color: "#9AA2B1", marginTop: 2 }}>
@@ -234,7 +234,7 @@ function AdminPageInner() {
             users.map((u) => (
               <div key={u.id} style={{ display: "flex", alignItems: "center", gap: 14, background: "#fff", border: "1.5px solid #E4E8F0", borderRadius: 14, padding: "14px 18px" }}>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <Link href={`/bruger/${encodeURIComponent(u.name)}`} style={{ fontWeight: 700, fontSize: 13.5, color: "#14213D" }}>
+                  <Link href={`/bruger/${encodeURIComponent(u.name)}`} style={{ fontWeight: 700, fontSize: 13.5, color: "#241C35" }}>
                     {u.name}
                   </Link>
                   <div style={{ fontSize: 11.5, color: "#9AA2B1", marginTop: 2 }}>{u.email}</div>
@@ -257,9 +257,9 @@ function AdminPageInner() {
                     fontWeight: 700,
                     padding: "6px 12px",
                     borderRadius: 999,
-                    border: u.isAdmin ? "1.5px solid #E4E8F0" : "1.5px solid #C7D3FA",
-                    background: u.isAdmin ? "#fff" : "#EEF2FF",
-                    color: u.isAdmin ? "#5B6478" : "#1B3AA6",
+                    border: u.isAdmin ? "1.5px solid #E4E8F0" : "1.5px solid #DDD1F5",
+                    background: u.isAdmin ? "#fff" : "#F3EEFC",
+                    color: u.isAdmin ? "#5B6478" : "#5B21B6",
                     cursor: "pointer",
                     whiteSpace: "nowrap",
                     flex: "0 0 auto",
@@ -344,8 +344,8 @@ function SupportTab({ presetUser }) {
                 padding: "9px 10px",
                 borderRadius: 8,
                 border: "none",
-                background: selected === t.userName ? "#EEF2FF" : "transparent",
-                color: "#14213D",
+                background: selected === t.userName ? "#F3EEFC" : "transparent",
+                color: "#241C35",
                 cursor: "pointer",
                 marginBottom: 2,
               }}
@@ -370,7 +370,7 @@ function SupportTab({ presetUser }) {
             />
             <button
               onClick={startManual}
-              style={{ fontSize: 12, fontWeight: 700, padding: "0 12px", borderRadius: 8, border: "none", background: "#2A55E5", color: "#fff", cursor: "pointer" }}
+              style={{ fontSize: 12, fontWeight: 700, padding: "0 12px", borderRadius: 8, border: "none", background: "#7C3AED", color: "#fff", cursor: "pointer" }}
             >
               Gå
             </button>
@@ -382,7 +382,7 @@ function SupportTab({ presetUser }) {
         {selected ? (
           <>
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
-              <LifeBuoy size={15} color="#2A55E5" />
+              <LifeBuoy size={15} color="#7C3AED" />
               <div style={{ fontWeight: 800, fontSize: 14.5 }}>{selected}</div>
             </div>
             <MessageThread
@@ -536,7 +536,7 @@ function HeroImagesSetting() {
               <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
                 <button
                   onClick={() => saveAdjustment(idx)}
-                  style={{ fontSize: 12.5, fontWeight: 700, padding: "8px 16px", borderRadius: 8, border: "1.5px solid #E4E8F0", background: "#fff", color: "#14213D", cursor: "pointer" }}
+                  style={{ fontSize: 12.5, fontWeight: 700, padding: "8px 16px", borderRadius: 8, border: "1.5px solid #E4E8F0", background: "#fff", color: "#241C35", cursor: "pointer" }}
                 >
                   Gem justering
                 </button>
@@ -563,7 +563,7 @@ function HeroImagesSetting() {
           padding: "10px 18px",
           borderRadius: 10,
           border: "1.5px solid #E4E8F0",
-          color: "#14213D",
+          color: "#241C35",
           cursor: uploading ? "default" : "pointer",
           opacity: uploading ? 0.6 : 1,
         }}
@@ -694,7 +694,7 @@ function ImageSetting({ label, settingKey, defaultUrl, hint }) {
         </div>
         <button
           onClick={handleSaveAdjustment}
-          style={{ alignSelf: "flex-start", fontSize: 12.5, fontWeight: 700, padding: "8px 16px", borderRadius: 8, border: "1.5px solid #E4E8F0", background: "#fff", color: "#14213D", cursor: "pointer" }}
+          style={{ alignSelf: "flex-start", fontSize: 12.5, fontWeight: 700, padding: "8px 16px", borderRadius: 8, border: "1.5px solid #E4E8F0", background: "#fff", color: "#241C35", cursor: "pointer" }}
         >
           Gem justering
         </button>
@@ -711,7 +711,7 @@ function ImageSetting({ label, settingKey, defaultUrl, hint }) {
           padding: "10px 18px",
           borderRadius: 10,
           border: "1.5px solid #E4E8F0",
-          color: "#14213D",
+          color: "#241C35",
           cursor: uploading ? "default" : "pointer",
           opacity: uploading ? 0.6 : 1,
         }}
@@ -763,7 +763,7 @@ function ContactSettings() {
       <div>
         <button
           onClick={save}
-          style={{ fontSize: 13, fontWeight: 700, padding: "9px 18px", borderRadius: 10, border: "none", background: "#2A55E5", color: "#fff", cursor: "pointer" }}
+          style={{ fontSize: 13, fontWeight: 700, padding: "9px 18px", borderRadius: 10, border: "none", background: "#7C3AED", color: "#fff", cursor: "pointer" }}
         >
           Gem
         </button>

@@ -233,7 +233,7 @@ export default function TaskDetailClient() {
   if (notFound) {
     return (
       <div style={{ padding: "60px 0", textAlign: "center", color: "#5B6478" }}>
-        Sagen findes ikke. <Link href="/" style={{ color: "#2A55E5", fontWeight: 700 }}>Tilbage til opgaver</Link>
+        Sagen findes ikke. <Link href="/" style={{ color: "#7C3AED", fontWeight: 700 }}>Tilbage til opgaver</Link>
       </div>
     );
   }
@@ -276,8 +276,8 @@ export default function TaskDetailClient() {
             borderRadius: 10,
             fontSize: 12.5,
             fontWeight: 700,
-            background: checkoutBanner.type === "success" ? "#E9F9F1" : checkoutBanner.type === "warning" ? "#FFF1E0" : "#EEF2FF",
-            color: checkoutBanner.type === "success" ? "#1AA37A" : checkoutBanner.type === "warning" ? "#B5610E" : "#1B3AA6",
+            background: checkoutBanner.type === "success" ? "#E9F9F1" : checkoutBanner.type === "warning" ? "#FFF1E0" : "#F3EEFC",
+            color: checkoutBanner.type === "success" ? "#1AA37A" : checkoutBanner.type === "warning" ? "#B5610E" : "#5B21B6",
           }}
         >
           {checkoutBanner.text}
@@ -358,7 +358,7 @@ export default function TaskDetailClient() {
                 padding: "10px 18px",
                 borderRadius: 10,
                 border: "1.5px solid #E4E8F0",
-                color: "#14213D",
+                color: "#241C35",
                 marginTop: 10,
                 marginBottom: 6,
                 marginRight: 8,
@@ -380,7 +380,7 @@ export default function TaskDetailClient() {
               padding: "10px 18px",
               borderRadius: 10,
               border: "1.5px solid #E4E8F0",
-              color: "#14213D",
+              color: "#241C35",
               marginTop: 10,
               marginBottom: 6,
             }}
@@ -420,7 +420,7 @@ export default function TaskDetailClient() {
               </span>
             )}
             {task.locationType === "remote" && (
-              <span style={{ fontSize: 12, fontWeight: 700, padding: "5px 12px", borderRadius: 999, background: "#EEF2FF", color: "#1B3AA6" }}>
+              <span style={{ fontSize: 12, fontWeight: 700, padding: "5px 12px", borderRadius: 999, background: "#F3EEFC", color: "#5B21B6" }}>
                 🖥️ Eksternt
               </span>
             )}
@@ -461,7 +461,7 @@ export default function TaskDetailClient() {
                   href={a.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, fontWeight: 600, color: "#2A55E5", background: "#F5F7FB", padding: "8px 12px", borderRadius: 10, width: "fit-content" }}
+                  style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, fontWeight: 600, color: "#7C3AED", background: "#F5F7FB", padding: "8px 12px", borderRadius: 10, width: "fit-content" }}
                 >
                   <FileText size={14} /> {a.filename}
                 </a>
@@ -471,7 +471,7 @@ export default function TaskDetailClient() {
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14, marginTop: 20, paddingTop: 20, borderTop: "1px solid #E4E8F0" }}>
             <div>
               <div style={{ fontSize: 11, color: "#5B6478", fontWeight: 600, marginBottom: 4 }}>Oprettet af</div>
-              <Link href={`/bruger/${encodeURIComponent(task.postedBy)}`} style={{ fontSize: 14.5, fontWeight: 700, color: "#2A55E5" }}>
+              <Link href={`/bruger/${encodeURIComponent(task.postedBy)}`} style={{ fontSize: 14.5, fontWeight: 700, color: "#7C3AED" }}>
                 {task.postedBy}
               </Link>
               {task.posterType === "business" && (
@@ -483,7 +483,7 @@ export default function TaskDetailClient() {
             </div>
             <div>
               <div style={{ fontSize: 11, color: "#5B6478", fontWeight: 600, marginBottom: 4 }}>Frist</div>
-              <div style={{ fontSize: 14.5, fontWeight: 700, display: "flex", alignItems: "center", gap: 6, color: task.deadline === "Fleksibel" ? "#1AA37A" : getDeadlineLabel(task).urgent ? "#C0392B" : "#14213D" }}>
+              <div style={{ fontSize: 14.5, fontWeight: 700, display: "flex", alignItems: "center", gap: 6, color: task.deadline === "Fleksibel" ? "#1AA37A" : getDeadlineLabel(task).urgent ? "#C0392B" : "#241C35" }}>
                 <Clock size={14} /> {getDeadlineLabel(task).text}
               </div>
             </div>
@@ -503,10 +503,10 @@ export default function TaskDetailClient() {
             <h3 style={{ fontSize: 15, marginBottom: 14 }}>Bud ({task.bids.length})</h3>
             {isOwner && task.status === "open" && task.bids.length > 0 && (
               <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: "#5B6478", marginBottom: 16 }}>
-                <ShieldCheck size={13} color="#2A55E5" style={{ flex: "0 0 auto" }} />
+                <ShieldCheck size={13} color="#7C3AED" style={{ flex: "0 0 auto" }} />
                 <span>
                   Betalinger håndteres sikkert af{" "}
-                  <a href="https://stripe.com" target="_blank" rel="noopener noreferrer" style={{ color: "#2A55E5", fontWeight: 700 }}>
+                  <a href="https://stripe.com" target="_blank" rel="noopener noreferrer" style={{ color: "#7C3AED", fontWeight: 700 }}>
                     Stripe
                   </a>
                   , en af verdens mest brugte betalingsudbydere.
@@ -526,8 +526,8 @@ export default function TaskDetailClient() {
                           width: 38,
                           height: 38,
                           borderRadius: "50%",
-                          background: "#EEF2FF",
-                          color: "#1B3AA6",
+                          background: "#F3EEFC",
+                          color: "#5B21B6",
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
@@ -541,7 +541,7 @@ export default function TaskDetailClient() {
                     </Link>
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-                        <Link href={`/bruger/${encodeURIComponent(b.bidderName)}`} style={{ fontWeight: 700, fontSize: 13.5, color: "#14213D" }}>
+                        <Link href={`/bruger/${encodeURIComponent(b.bidderName)}`} style={{ fontWeight: 700, fontSize: 13.5, color: "#241C35" }}>
                           {shortDisplayName(b.bidderName)}
                           {b.bidderName === name ? " (dig)" : ""}
                         </Link>
@@ -569,7 +569,7 @@ export default function TaskDetailClient() {
                           <button
                             onClick={() => acceptBid(b.id)}
                             disabled={checkingOut === b.id}
-                            style={{ fontSize: 12.5, fontWeight: 700, padding: "8px 14px", borderRadius: 8, border: "1.5px solid #2A55E5", background: "#fff", color: "#2A55E5", cursor: checkingOut === b.id ? "default" : "pointer", opacity: checkingOut === b.id ? 0.6 : 1 }}
+                            style={{ fontSize: 12.5, fontWeight: 700, padding: "8px 14px", borderRadius: 8, border: "1.5px solid #7C3AED", background: "#fff", color: "#7C3AED", cursor: checkingOut === b.id ? "default" : "pointer", opacity: checkingOut === b.id ? 0.6 : 1 }}
                           >
                             {checkingOut === b.id ? "Åbner betaling…" : "Vælg og betal for dette bud"}
                           </button>
@@ -595,7 +595,7 @@ export default function TaskDetailClient() {
                         <MessageThread taskId={task.id} bidderName={b.bidderName} currentName={name} />
                       )}
                     </div>
-                    <div style={{ fontWeight: 800, fontSize: 14.5, whiteSpace: "nowrap", color: b.bidderName === name ? "#2A55E5" : "#14213D" }}>
+                    <div style={{ fontWeight: 800, fontSize: 14.5, whiteSpace: "nowrap", color: b.bidderName === name ? "#7C3AED" : "#241C35" }}>
                       {formatBudgetDisplay(b.amount)}
                     </div>
                   </div>
@@ -618,7 +618,7 @@ export default function TaskDetailClient() {
               </p>
               <Link
                 href="/login"
-                style={{ display: "inline-block", fontSize: 13.5, fontWeight: 700, padding: "11px 20px", borderRadius: 10, background: "#2A55E5", color: "#fff" }}
+                style={{ display: "inline-block", fontSize: 13.5, fontWeight: 700, padding: "11px 20px", borderRadius: 10, background: "#7C3AED", color: "#fff" }}
               >
                 Log ind
               </Link>
@@ -630,7 +630,7 @@ export default function TaskDetailClient() {
               </p>
               <Link
                 href="/betalinger"
-                style={{ display: "inline-block", fontSize: 13.5, fontWeight: 700, padding: "11px 20px", borderRadius: 10, background: "#2A55E5", color: "#fff" }}
+                style={{ display: "inline-block", fontSize: 13.5, fontWeight: 700, padding: "11px 20px", borderRadius: 10, background: "#7C3AED", color: "#fff" }}
               >
                 Forbind Stripe på din profil
               </Link>
@@ -661,7 +661,7 @@ export default function TaskDetailClient() {
               />
               <button
                 onClick={submitBid}
-                style={{ width: "100%", marginTop: 16, fontSize: 14.5, fontWeight: 700, padding: "12px 22px", borderRadius: 12, border: "none", background: "#2A55E5", color: "#fff", cursor: "pointer" }}
+                style={{ width: "100%", marginTop: 16, fontSize: 14.5, fontWeight: 700, padding: "12px 22px", borderRadius: 12, border: "none", background: "#7C3AED", color: "#fff", cursor: "pointer" }}
               >
                 Afgiv bud
               </button>

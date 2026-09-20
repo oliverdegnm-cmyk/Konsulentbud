@@ -44,7 +44,7 @@ export default function MobileMenu() {
         className="kb-mobile-menu-btn"
         onClick={() => setOpen(true)}
         aria-label="Åbn menu"
-        style={{ alignItems: "center", justifyContent: "center", width: 38, height: 38, borderRadius: 10, border: "1.5px solid #E4E8F0", background: "#fff", color: "#14213D", cursor: "pointer" }}
+        style={{ alignItems: "center", justifyContent: "center", width: 38, height: 38, borderRadius: 10, border: "1.5px solid #E4E8F0", background: "#fff", color: "#241C35", cursor: "pointer" }}
       >
         <Menu size={19} />
       </button>
@@ -52,12 +52,12 @@ export default function MobileMenu() {
       {open && (
         <div style={{ position: "fixed", inset: 0, background: "#fff", zIndex: 100, overflowY: "auto" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "20px 24px", borderBottom: "1px solid #E4E8F0" }}>
-            <button onClick={() => setOpen(false)} aria-label="Luk menu" style={{ background: "none", border: "none", cursor: "pointer", color: "#14213D" }}>
+            <button onClick={() => setOpen(false)} aria-label="Luk menu" style={{ background: "none", border: "none", cursor: "pointer", color: "#241C35" }}>
               <X size={22} />
             </button>
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <div style={{ width: 30, height: 30, borderRadius: 9, background: "#2A55E5", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 12 }}>
-                KB
+              <div style={{ width: 30, height: 30, borderRadius: "50%", background: "#7C3AED", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: 13 }}>
+                K
               </div>
               <div style={{ fontSize: 16, fontWeight: 800 }}>Konsulentbud</div>
             </div>
@@ -75,7 +75,7 @@ export default function MobileMenu() {
                   padding: "18px 0",
                   fontSize: 17,
                   fontWeight: l.cta ? 800 : 600,
-                  color: l.cta ? "#2A55E5" : "#14213D",
+                  color: l.cta ? "#7C3AED" : "#241C35",
                   borderBottom: "1px solid #F0F1F5",
                 }}
               >

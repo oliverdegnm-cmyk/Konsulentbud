@@ -42,7 +42,7 @@ function SectionCard({ icon: Icon, title, children }) {
   return (
     <div style={{ background: "#fff", border: "1.5px solid #E4E8F0", borderRadius: 18, padding: 24, marginBottom: 18 }}>
       <div style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: 16 }}>
-        <div style={{ width: 30, height: 30, borderRadius: 9, background: "#EEF2FF", color: "#2A55E5", display: "flex", alignItems: "center", justifyContent: "center", flex: "0 0 auto" }}>
+        <div style={{ width: 30, height: 30, borderRadius: 9, background: "#F3EEFC", color: "#7C3AED", display: "flex", alignItems: "center", justifyContent: "center", flex: "0 0 auto" }}>
           <Icon size={15} />
         </div>
         <div style={{ fontSize: 14.5, fontWeight: 800 }}>{title}</div>
@@ -62,8 +62,8 @@ function FileSlot({ label, hint, fileUrl, filename, uploading, error, onChange, 
       {hint && <p style={{ fontSize: 11.5, color: "#9AA2B1", margin: "0 0 8px" }}>{hint}</p>}
       {fileUrl ? (
         <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 16px", background: "#F5F7FB", borderRadius: 12 }}>
-          <FileText size={18} color="#2A55E5" />
-          <a href={fileUrl} target="_blank" rel="noopener noreferrer" style={{ flex: 1, fontSize: 13.5, fontWeight: 700, color: "#2A55E5" }}>
+          <FileText size={18} color="#7C3AED" />
+          <a href={fileUrl} target="_blank" rel="noopener noreferrer" style={{ flex: 1, fontSize: 13.5, fontWeight: 700, color: "#7C3AED" }}>
             {filename || "Dokument.pdf"}
           </a>
           <button
@@ -85,7 +85,7 @@ function FileSlot({ label, hint, fileUrl, filename, uploading, error, onChange, 
             padding: "10px 18px",
             borderRadius: 10,
             border: "1.5px solid #E4E8F0",
-            color: "#14213D",
+            color: "#241C35",
             cursor: uploading ? "default" : "pointer",
             opacity: uploading ? 0.6 : 1,
           }}
@@ -321,7 +321,7 @@ function ProfilePage() {
               width: 64,
               height: 64,
               borderRadius: "50%",
-              background: avatarUrl ? "#F5F7FB" : "linear-gradient(135deg, #2A55E5, #6D8CF0)",
+              background: avatarUrl ? "#F5F7FB" : "linear-gradient(135deg, #7C3AED, #A78BFA)",
               color: "#fff",
               display: "flex",
               alignItems: "center",
@@ -356,7 +356,7 @@ function ProfilePage() {
               boxShadow: "0 2px 6px -2px rgba(20,33,61,0.3)",
             }}
           >
-            <Camera size={12} color="#2A55E5" />
+            <Camera size={12} color="#7C3AED" />
             <input type="file" accept="image/*" onChange={handleAvatarChange} disabled={avatarUploading} style={{ display: "none" }} />
           </label>
         </div>
@@ -374,7 +374,7 @@ function ProfilePage() {
           </div>
           <p style={{ fontSize: 13, color: "#5B6478", margin: "3px 0 0" }}>
             Vises for andre, når de ser dine bud eller opgaver.{" "}
-            <Link href={`/bruger/${encodeURIComponent(name)}`} style={{ color: "#2A55E5", fontWeight: 700 }}>
+            <Link href={`/bruger/${encodeURIComponent(name)}`} style={{ color: "#7C3AED", fontWeight: 700 }}>
               Se din profil, som andre ser den →
             </Link>
           </p>
@@ -394,13 +394,13 @@ function ProfilePage() {
       {!emailVerified && <EmailVerifyBanner />}
 
       {completeness < 100 && (
-        <div style={{ background: "#EEF2FF", border: "1.5px solid #DCE4FB", borderRadius: 16, padding: "16px 20px", marginBottom: 20 }}>
+        <div style={{ background: "#F3EEFC", border: "1.5px solid #E4D9F7", borderRadius: 16, padding: "16px 20px", marginBottom: 20 }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
             <div style={{ fontSize: 13.5, fontWeight: 700 }}>Din profil er {completeness}% udfyldt</div>
             <div style={{ fontSize: 12, color: "#5B6478" }}>En komplet profil får flere bud valgt</div>
           </div>
           <div style={{ height: 8, borderRadius: 999, background: "#fff", overflow: "hidden" }}>
-            <div style={{ height: "100%", width: `${completeness}%`, background: "#2A55E5", borderRadius: 999, transition: "width .3s ease" }} />
+            <div style={{ height: "100%", width: `${completeness}%`, background: "#7C3AED", borderRadius: 999, transition: "width .3s ease" }} />
           </div>
         </div>
       )}
@@ -500,7 +500,7 @@ function ProfilePage() {
       <SectionCard icon={ListChecks} title="Hvad kan du hjælpe med?">
         <div style={{ fontSize: 13, color: "#5B6478", marginBottom: 14, lineHeight: 1.5 }}>
           Vælg de kategorier, du tager opgaver inden for. Du bliver vist i{" "}
-          <Link href="/konsulenter" style={{ color: "#2A55E5", fontWeight: 600 }}>
+          <Link href="/konsulenter" style={{ color: "#7C3AED", fontWeight: 600 }}>
             konsulentoversigten
           </Link>{" "}
           under dem, og får besked, så snart en ny opgave i en af dem bliver oprettet.
@@ -521,9 +521,9 @@ function ProfilePage() {
                   fontSize: 12.5,
                   fontWeight: 600,
                   cursor: "pointer",
-                  border: active ? "1.5px solid #2A55E5" : "1.5px solid #E4E8F0",
-                  background: active ? "#EEF2FF" : "#fff",
-                  color: active ? "#1B3AA6" : "#5B6478",
+                  border: active ? "1.5px solid #7C3AED" : "1.5px solid #E4E8F0",
+                  background: active ? "#F3EEFC" : "#fff",
+                  color: active ? "#5B21B6" : "#5B6478",
                 }}
               >
                 {c.name}
@@ -545,7 +545,7 @@ function ProfilePage() {
         >
           <input type="checkbox" checked={listed} onChange={(e) => setListed(e.target.checked)} style={{ width: 16, height: 16 }} />
           {listed ? <Eye size={15} color="#5B6478" /> : <EyeOff size={15} color="#5B6478" />}
-          <span style={{ fontSize: 13, color: "#14213D" }}>
+          <span style={{ fontSize: 13, color: "#241C35" }}>
             Vis min profil i konsulentoversigten, og giv mig besked om nye matchende opgaver
           </span>
         </label>
@@ -563,7 +563,7 @@ function ProfilePage() {
 
       <button
         onClick={save}
-        style={{ fontSize: 14.5, fontWeight: 700, padding: "12px 24px", borderRadius: 12, border: "none", background: "#2A55E5", color: "#fff", cursor: "pointer", marginBottom: 18 }}
+        style={{ fontSize: 14.5, fontWeight: 700, padding: "12px 24px", borderRadius: 12, border: "none", background: "#7C3AED", color: "#fff", cursor: "pointer", marginBottom: 18 }}
       >
         Gem profil
       </button>
@@ -603,9 +603,9 @@ function ProfilePage() {
                 fontWeight: 700,
                 padding: "9px 16px",
                 borderRadius: 999,
-                border: "1.5px solid #DCE4FB",
-                background: "#EEF2FF",
-                color: "#1B3AA6",
+                border: "1.5px solid #E4D9F7",
+                background: "#F3EEFC",
+                color: "#5B21B6",
                 cursor: parsingCv ? "default" : "pointer",
                 opacity: parsingCv ? 0.6 : 1,
               }}
@@ -660,7 +660,7 @@ function ServiceLevelCard({ level }) {
     <SectionCard icon={Percent} title="Dit serviceniveau">
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: 6 }}>
         <div style={{ fontSize: 15, fontWeight: 800 }}>{current.label}</div>
-        <div style={{ fontSize: 12.5, fontWeight: 800, color: "#2A55E5", background: "#EEF2FF", padding: "4px 12px", borderRadius: 999, whiteSpace: "nowrap" }}>
+        <div style={{ fontSize: 12.5, fontWeight: 800, color: "#7C3AED", background: "#F3EEFC", padding: "4px 12px", borderRadius: 999, whiteSpace: "nowrap" }}>
           {current.feePercent}% i servicegebyr
         </div>
       </div>
@@ -672,12 +672,12 @@ function ServiceLevelCard({ level }) {
         <div style={{ fontSize: 12.5, color: "#5B6478", marginTop: 8, lineHeight: 1.6 }}>
           {earnings30d < next.minEarnings ? (
             <>
-              Du mangler <b style={{ color: "#14213D" }}>{formatKr(next.minEarnings - earnings30d)}</b> i indtjening de seneste 30 dage for at nå{" "}
-              <b style={{ color: "#14213D" }}>{next.label}</b> ({next.feePercent}% i gebyr).
+              Du mangler <b style={{ color: "#241C35" }}>{formatKr(next.minEarnings - earnings30d)}</b> i indtjening de seneste 30 dage for at nå{" "}
+              <b style={{ color: "#241C35" }}>{next.label}</b> ({next.feePercent}% i gebyr).
             </>
           ) : (
             <>
-              Din indtjening de seneste 30 dage rækker allerede til <b style={{ color: "#14213D" }}>{next.label}</b>.
+              Din indtjening de seneste 30 dage rækker allerede til <b style={{ color: "#241C35" }}>{next.label}</b>.
             </>
           )}
           {rateCat.order < next.minRateOrder && (
@@ -705,16 +705,16 @@ function ServiceLevelCard({ level }) {
                 gap: 10,
                 padding: "9px 12px",
                 borderRadius: 10,
-                background: isCurrent ? "#EEF2FF" : "transparent",
+                background: isCurrent ? "#F3EEFC" : "transparent",
                 marginBottom: 4,
               }}
             >
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                {isCurrent && <CheckCircle2 size={14} color="#2A55E5" style={{ flex: "0 0 auto" }} />}
-                <span style={{ fontSize: 13, fontWeight: isCurrent ? 800 : 600, color: isCurrent ? "#1B3AA6" : "#14213D" }}>{l.label}</span>
+                {isCurrent && <CheckCircle2 size={14} color="#7C3AED" style={{ flex: "0 0 auto" }} />}
+                <span style={{ fontSize: 13, fontWeight: isCurrent ? 800 : 600, color: isCurrent ? "#5B21B6" : "#241C35" }}>{l.label}</span>
               </div>
               <div style={{ fontSize: 11.5, color: "#5B6478", textAlign: "right" }}>
-                <span style={{ fontWeight: 800, color: "#14213D" }}>{l.feePercent}%</span> gebyr
+                <span style={{ fontWeight: 800, color: "#241C35" }}>{l.feePercent}%</span> gebyr
                 {l.minEarnings > 0 && (
                   <>
                     {" "}

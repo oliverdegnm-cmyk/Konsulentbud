@@ -7,16 +7,16 @@ import { Bell, Gavel, CheckCircle2, MessageSquare, XCircle, UserX, Star, ShieldC
 // Ikon og farve pr. notifikationstype, så listen kan skimmes uden at læse hver
 // linje - i stedet for én ensfarvet tekstvæg (se skærmbillede fra brugeren).
 const TYPE_STYLE = {
-  new_bid: { icon: Gavel, color: "#2A55E5", bg: "#EEF2FF" },
+  new_bid: { icon: Gavel, color: "#7C3AED", bg: "#F3EEFC" },
   bid_accepted: { icon: CheckCircle2, color: "#1AA37A", bg: "#E9F9F1" },
   new_message: { icon: MessageSquare, color: "#5B6478", bg: "#F5F7FB" },
   task_completed: { icon: CheckCircle2, color: "#1AA37A", bg: "#E9F9F1" },
   task_cancelled: { icon: XCircle, color: "#C0392B", bg: "#FDECEC" },
   helper_withdrew: { icon: UserX, color: "#B5610E", bg: "#FFF1E0" },
   new_review: { icon: Star, color: "#B5610E", bg: "#FFF1E0" },
-  task_match: { icon: Sparkles, color: "#2A55E5", bg: "#EEF2FF" },
-  admin_message: { icon: ShieldCheck, color: "#2A55E5", bg: "#EEF2FF" },
-  support_reply: { icon: Reply, color: "#2A55E5", bg: "#EEF2FF" },
+  task_match: { icon: Sparkles, color: "#7C3AED", bg: "#F3EEFC" },
+  admin_message: { icon: ShieldCheck, color: "#7C3AED", bg: "#F3EEFC" },
+  support_reply: { icon: Reply, color: "#7C3AED", bg: "#F3EEFC" },
 };
 const DEFAULT_TYPE_STYLE = { icon: Bell, color: "#5B6478", bg: "#F5F7FB" };
 
@@ -179,11 +179,11 @@ export default function NotificationBell({ name }) {
                   <Icon size={14} />
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ fontSize: 13, color: "#14213D", lineHeight: 1.5, fontWeight: n.isRead ? 400 : 700 }}>{n.body}</div>
+                  <div style={{ fontSize: 13, color: "#241C35", lineHeight: 1.5, fontWeight: n.isRead ? 400 : 700 }}>{n.body}</div>
                   <div style={{ fontSize: 11, color: "#9AA2B1", marginTop: 3 }}>{timeAgo(n.createdAt)}</div>
                 </div>
                 {!n.isRead && (
-                  <div style={{ width: 7, height: 7, borderRadius: "50%", background: "#2A55E5", flex: "0 0 auto", marginTop: 5 }} />
+                  <div style={{ width: 7, height: 7, borderRadius: "50%", background: "#7C3AED", flex: "0 0 auto", marginTop: 5 }} />
                 )}
               </div>
             );

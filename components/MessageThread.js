@@ -70,8 +70,8 @@ export default function MessageThread({ taskId, bidderName, currentName, endpoin
               <div key={m.id} style={{ alignSelf: mine ? "flex-end" : "flex-start", maxWidth: "85%" }}>
                 <div
                   style={{
-                    background: mine ? "#2A55E5" : "#fff",
-                    color: mine ? "#fff" : "#14213D",
+                    background: mine ? "#7C3AED" : "#fff",
+                    color: mine ? "#fff" : "#241C35",
                     border: mine ? "none" : "1px solid #E4E8F0",
                     borderRadius: 12,
                     padding: "8px 12px",
@@ -92,7 +92,7 @@ export default function MessageThread({ taskId, bidderName, currentName, endpoin
                         marginTop: m.body ? 6 : 0,
                         fontSize: 12,
                         fontWeight: 600,
-                        color: mine ? "#fff" : "#2A55E5",
+                        color: mine ? "#fff" : "#7C3AED",
                         textDecoration: "underline",
                       }}
                     >
@@ -153,7 +153,7 @@ export default function MessageThread({ taskId, bidderName, currentName, endpoin
         <button
           onClick={send}
           aria-label="Send besked"
-          style={{ width: 36, height: 36, borderRadius: 10, border: "none", background: "#2A55E5", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", flex: "0 0 auto" }}
+          style={{ width: 36, height: 36, borderRadius: 10, border: "none", background: "#7C3AED", color: "#fff", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", flex: "0 0 auto" }}
         >
           <Send size={15} />
         </button>

@@ -37,8 +37,8 @@ function ExperienceTimeline({ text }) {
                     display: "inline-block",
                     fontSize: 11,
                     fontWeight: 700,
-                    color: "#2A55E5",
-                    background: "#EEF2FF",
+                    color: "#7C3AED",
+                    background: "#F3EEFC",
                     padding: "4px 9px",
                     borderRadius: 8,
                     whiteSpace: "nowrap",
@@ -47,8 +47,8 @@ function ExperienceTimeline({ text }) {
                   {years}
                 </span>
               </div>
-              <div style={{ flex: 1, minWidth: 0, borderLeft: "2px solid #EEF2FF", paddingLeft: 14 }}>
-                <div style={{ fontSize: 14, fontWeight: 700, color: "#14213D", marginBottom: description ? 4 : 0 }}>{titlePart}</div>
+              <div style={{ flex: 1, minWidth: 0, borderLeft: "2px solid #F3EEFC", paddingLeft: 14 }}>
+                <div style={{ fontSize: 14, fontWeight: 700, color: "#241C35", marginBottom: description ? 4 : 0 }}>{titlePart}</div>
                 {description && <div style={{ fontSize: 13, color: "#5B6478", lineHeight: 1.55 }}>{description}</div>}
               </div>
             </div>
@@ -56,7 +56,7 @@ function ExperienceTimeline({ text }) {
         }
 
         return (
-          <p key={i} style={{ fontSize: 14, color: "#14213D", lineHeight: 1.65, margin: isLast ? 0 : "0 0 12px" }}>
+          <p key={i} style={{ fontSize: 14, color: "#241C35", lineHeight: 1.65, margin: isLast ? 0 : "0 0 12px" }}>
             {line}
           </p>
         );
@@ -76,7 +76,7 @@ function SectionCard({ icon: Icon, title, children }) {
   return (
     <div style={{ background: "#fff", border: "1.5px solid #E4E8F0", borderRadius: 18, padding: 24, marginBottom: 16 }}>
       <div style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: 14 }}>
-        <div style={{ width: 28, height: 28, borderRadius: 8, background: "#EEF2FF", color: "#2A55E5", display: "flex", alignItems: "center", justifyContent: "center", flex: "0 0 auto" }}>
+        <div style={{ width: 28, height: 28, borderRadius: 8, background: "#F3EEFC", color: "#7C3AED", display: "flex", alignItems: "center", justifyContent: "center", flex: "0 0 auto" }}>
           <Icon size={14} />
         </div>
         <div style={{ fontSize: 13, fontWeight: 800, textTransform: "uppercase", letterSpacing: "0.03em", color: "#5B6478" }}>{title}</div>
@@ -122,7 +122,7 @@ export default function ProfileClient() {
 
       {/* Header-kort med gradient, gør profilen hurtigere at genkende og skabe tillid til på et øjekast */}
       <div style={{ borderRadius: 22, overflow: "hidden", border: "1.5px solid #E4E8F0", marginBottom: 16 }}>
-        <div style={{ height: 64, background: "linear-gradient(120deg, #2A55E5, #6D8CF0)" }} />
+        <div style={{ height: 64, background: "linear-gradient(120deg, #7C3AED, #A78BFA)" }} />
         <div style={{ background: "#fff", padding: "0 24px 24px" }}>
           <div style={{ display: "flex", alignItems: "flex-end", gap: 16, marginTop: -32, marginBottom: 14 }}>
             <div
@@ -130,7 +130,7 @@ export default function ProfileClient() {
                 width: 76,
                 height: 76,
                 borderRadius: "50%",
-                background: profile?.avatarUrl ? "#F5F7FB" : "linear-gradient(135deg, #2A55E5, #6D8CF0)",
+                background: profile?.avatarUrl ? "#F5F7FB" : "linear-gradient(135deg, #7C3AED, #A78BFA)",
                 color: "#fff",
                 display: "flex",
                 alignItems: "center",
@@ -179,7 +179,7 @@ export default function ProfileClient() {
 
           {level && level.reviewCount > 0 ? (
             <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 13.5, color: "#5B6478" }}>
-              <Stars value={level.avgRating} /> <b style={{ color: "#14213D" }}>{level.avgRating.toFixed(1)}</b> ({level.reviewCount} anmeldelser)
+              <Stars value={level.avgRating} /> <b style={{ color: "#241C35" }}>{level.avgRating.toFixed(1)}</b> ({level.reviewCount} anmeldelser)
             </div>
           ) : (
             <div style={{ fontSize: 13, color: "#9AA2B1" }}>Ingen anmeldelser endnu</div>
@@ -211,7 +211,7 @@ export default function ProfileClient() {
           <div style={{ fontSize: 11.5, color: "#5B6478", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.03em", marginBottom: 10 }}>Kompetencer</div>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
             {profile.skills.split(",").map((s) => s.trim()).filter(Boolean).map((s, i) => (
-              <span key={i} style={{ fontSize: 12.5, fontWeight: 700, padding: "6px 13px", borderRadius: 999, background: "#EEF2FF", color: "#1B3AA6" }}>
+              <span key={i} style={{ fontSize: 12.5, fontWeight: 700, padding: "6px 13px", borderRadius: 999, background: "#F3EEFC", color: "#5B21B6" }}>
                 {s}
               </span>
             ))}
@@ -226,7 +226,7 @@ export default function ProfileClient() {
               href={profile.cvUrl}
               target="_blank"
               rel="noopener noreferrer"
-              style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 13, fontWeight: 700, padding: "11px 18px", borderRadius: 12, background: "#14213D", color: "#fff" }}
+              style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 13, fontWeight: 700, padding: "11px 18px", borderRadius: 12, background: "#241C35", color: "#fff" }}
             >
               <FileText size={15} /> Se CV
             </a>
@@ -236,7 +236,7 @@ export default function ProfileClient() {
               href={profile.portfolioUrl}
               target="_blank"
               rel="noopener noreferrer"
-              style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 13, fontWeight: 700, padding: "11px 18px", borderRadius: 12, border: "1.5px solid #E4E8F0", color: "#14213D" }}
+              style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 13, fontWeight: 700, padding: "11px 18px", borderRadius: 12, border: "1.5px solid #E4E8F0", color: "#241C35" }}
             >
               <FileText size={15} /> Se portfolio
             </a>
@@ -246,7 +246,7 @@ export default function ProfileClient() {
               href={profile.linkedinUrl.startsWith("http") ? profile.linkedinUrl : `https://${profile.linkedinUrl}`}
               target="_blank"
               rel="noopener noreferrer"
-              style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 13, fontWeight: 700, padding: "11px 18px", borderRadius: 12, border: "1.5px solid #E4E8F0", color: "#14213D" }}
+              style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 13, fontWeight: 700, padding: "11px 18px", borderRadius: 12, border: "1.5px solid #E4E8F0", color: "#241C35" }}
             >
               <Linkedin size={15} /> LinkedIn
             </a>
@@ -256,7 +256,7 @@ export default function ProfileClient() {
               href={profile.websiteUrl.startsWith("http") ? profile.websiteUrl : `https://${profile.websiteUrl}`}
               target="_blank"
               rel="noopener noreferrer"
-              style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 13, fontWeight: 700, padding: "11px 18px", borderRadius: 12, border: "1.5px solid #E4E8F0", color: "#14213D" }}
+              style={{ display: "inline-flex", alignItems: "center", gap: 8, fontSize: 13, fontWeight: 700, padding: "11px 18px", borderRadius: 12, border: "1.5px solid #E4E8F0", color: "#241C35" }}
             >
               <Globe size={15} /> Hjemmeside
             </a>
@@ -266,7 +266,7 @@ export default function ProfileClient() {
 
       {profile?.bio && (
         <SectionCard icon={User} title="Om">
-          <p style={{ fontSize: 14, color: "#14213D", lineHeight: 1.65, margin: 0 }}>{profile.bio}</p>
+          <p style={{ fontSize: 14, color: "#241C35", lineHeight: 1.65, margin: 0 }}>{profile.bio}</p>
         </SectionCard>
       )}
 
@@ -303,7 +303,7 @@ export default function ProfileClient() {
               <Stars value={r.rating} />
             </div>
             <div style={{ fontSize: 12, color: "#5B6478", marginBottom: 6 }}>om "{r.taskTitle}"</div>
-            {r.comment && <div style={{ fontSize: 13, color: "#14213D", lineHeight: 1.55 }}>{r.comment}</div>}
+            {r.comment && <div style={{ fontSize: 13, color: "#241C35", lineHeight: 1.55 }}>{r.comment}</div>}
           </div>
         ))}
     </div>

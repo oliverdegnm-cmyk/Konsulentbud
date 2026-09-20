@@ -54,8 +54,8 @@ export default function InstallAppBanner() {
         display: "flex",
         alignItems: "center",
         gap: 14,
-        background: "#EEF2FF",
-        border: "1.5px solid #DCE4FB",
+        background: "#F3EEFC",
+        border: "1.5px solid #E4D9F7",
         borderRadius: 16,
         padding: "14px 18px",
         marginBottom: 20,
@@ -65,18 +65,18 @@ export default function InstallAppBanner() {
         style={{
           width: 38,
           height: 38,
-          borderRadius: 11,
-          background: "#2A55E5",
+          borderRadius: "50%",
+          background: "#7C3AED",
           color: "#fff",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           fontWeight: 800,
-          fontSize: 14,
+          fontSize: 16,
           flex: "0 0 auto",
         }}
       >
-        KB
+        K
       </div>
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ fontSize: 13.5, fontWeight: 700 }}>Installer Konsulentbud som app</div>
@@ -100,7 +100,7 @@ export default function InstallAppBanner() {
             padding: "9px 14px",
             borderRadius: 10,
             border: "none",
-            background: "#2A55E5",
+            background: "#7C3AED",
             color: "#fff",
             cursor: "pointer",
             flex: "0 0 auto",

@@ -47,8 +47,8 @@ function ConsultantCard({ c }) {
               width: 46,
               height: 46,
               borderRadius: "50%",
-              background: "#EEF2FF",
-              color: "#1B3AA6",
+              background: "#F3EEFC",
+              color: "#5B21B6",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -136,7 +136,7 @@ function KonsulenterInner() {
       <h1 style={{ fontSize: 24, fontWeight: 800, marginBottom: 4 }}>Find en konsulent</h1>
       <p style={{ fontSize: 13.5, color: "#5B6478", marginBottom: 20 }}>
         {consultants.length} konsulenter har udfyldt en profil {catFilter === "all" ? "" : `inden for ${catFilter}`}. Foretrækker du at få bud i stedet,{" "}
-        <Link href="/opret" style={{ color: "#2A55E5", fontWeight: 600 }}>
+        <Link href="/opret" style={{ color: "#7C3AED", fontWeight: 600 }}>
           opret en opgave
         </Link>{" "}
         i stedet for at vælge selv.
@@ -167,9 +167,9 @@ function KonsulenterInner() {
             fontSize: 12.5,
             fontWeight: 600,
             cursor: "pointer",
-            border: catFilter === "all" ? "1.5px solid #2A55E5" : "1.5px solid #E4E8F0",
-            background: catFilter === "all" ? "#EEF2FF" : "#fff",
-            color: catFilter === "all" ? "#1B3AA6" : "#5B6478",
+            border: catFilter === "all" ? "1.5px solid #7C3AED" : "1.5px solid #E4E8F0",
+            background: catFilter === "all" ? "#F3EEFC" : "#fff",
+            color: catFilter === "all" ? "#5B21B6" : "#5B6478",
           }}
         >
           Alle kategorier
@@ -187,9 +187,9 @@ function KonsulenterInner() {
               fontSize: 12.5,
               fontWeight: 600,
               cursor: "pointer",
-              border: catFilter === c.name ? "1.5px solid #2A55E5" : "1.5px solid #E4E8F0",
-              background: catFilter === c.name ? "#EEF2FF" : "#fff",
-              color: catFilter === c.name ? "#1B3AA6" : "#5B6478",
+              border: catFilter === c.name ? "1.5px solid #7C3AED" : "1.5px solid #E4E8F0",
+              background: catFilter === c.name ? "#F3EEFC" : "#fff",
+              color: catFilter === c.name ? "#5B21B6" : "#5B6478",
             }}
           >
             <CatIcon name={c.icon} size={13} />
@@ -212,7 +212,7 @@ function KonsulenterInner() {
           <p style={{ fontSize: 14, marginBottom: 4 }}>Ingen konsulenter matcher endnu.</p>
           <p style={{ fontSize: 13 }}>
             Er du konsulent?{" "}
-            <Link href="/profil" style={{ color: "#2A55E5", fontWeight: 600 }}>
+            <Link href="/profil" style={{ color: "#7C3AED", fontWeight: 600 }}>
               Udfyld din profil
             </Link>{" "}
             og bliv den første i denne kategori.

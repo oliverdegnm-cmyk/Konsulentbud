@@ -20,7 +20,7 @@ export default async function Image() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          background: "#14213D",
+          background: "#241C35",
           fontFamily: "sans-serif",
         }}
       >
@@ -30,7 +30,7 @@ export default async function Image() {
               width: 84,
               height: 84,
               borderRadius: 22,
-              background: "#2A55E5",
+              background: "#7C3AED",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -49,7 +49,7 @@ export default async function Image() {
           Danmarks platform for konsulentopgaver
         </div>
         <div style={{ display: "flex", gap: 14, marginTop: 44 }}>
-          {["Bogføring", "Kundeservice", "HR & rekruttering", "Grafisk design"].map((tag) => (
+          {["Strategi", "IT & digitalisering", "Økonomi & finans", "AI & automatisering"].map((tag) => (
             <div
               key={tag}
               style={{

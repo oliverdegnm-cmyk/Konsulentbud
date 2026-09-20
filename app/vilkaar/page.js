@@ -84,7 +84,7 @@ export default function TermsPage() {
 
       <Section title="12. Kontakt">
         <p>
-          Spørgsmål til disse vilkår kan rettes via <a href="/kontakt" style={{ color: "#2A55E5", fontWeight: 700 }}>kontaktformularen</a>.
+          Spørgsmål til disse vilkår kan rettes via <a href="/kontakt" style={{ color: "#7C3AED", fontWeight: 700 }}>kontaktformularen</a>.
         </p>
       </Section>
     </div>

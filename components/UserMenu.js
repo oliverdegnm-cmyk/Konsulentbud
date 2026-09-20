@@ -58,8 +58,8 @@ export default function UserMenu() {
             width: 28,
             height: 28,
             borderRadius: "50%",
-            background: "#EEF2FF",
-            color: "#1B3AA6",
+            background: "#F3EEFC",
+            color: "#5B21B6",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -93,42 +93,42 @@ export default function UserMenu() {
           <Link
             href="/mine"
             onClick={() => setOpen(false)}
-            style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", borderRadius: 10, fontSize: 13.5, fontWeight: 600, color: "#14213D" }}
+            style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", borderRadius: 10, fontSize: 13.5, fontWeight: 600, color: "#241C35" }}
           >
             <Briefcase size={15} color="#5B6478" /> Mine sager
           </Link>
           <Link
             href="/beskeder"
             onClick={() => setOpen(false)}
-            style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", borderRadius: 10, fontSize: 13.5, fontWeight: 600, color: "#14213D" }}
+            style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", borderRadius: 10, fontSize: 13.5, fontWeight: 600, color: "#241C35" }}
           >
             <MessageCircle size={15} color="#5B6478" /> Beskeder
           </Link>
           <Link
             href="/profil"
             onClick={() => setOpen(false)}
-            style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", borderRadius: 10, fontSize: 13.5, fontWeight: 600, color: "#14213D" }}
+            style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", borderRadius: 10, fontSize: 13.5, fontWeight: 600, color: "#241C35" }}
           >
             <User size={15} color="#5B6478" /> Profil
           </Link>
           <Link
             href="/indstillinger"
             onClick={() => setOpen(false)}
-            style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", borderRadius: 10, fontSize: 13.5, fontWeight: 600, color: "#14213D" }}
+            style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", borderRadius: 10, fontSize: 13.5, fontWeight: 600, color: "#241C35" }}
           >
             <Settings size={15} color="#5B6478" /> Indstillinger
           </Link>
           <Link
             href="/betalinger"
             onClick={() => setOpen(false)}
-            style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", borderRadius: 10, fontSize: 13.5, fontWeight: 600, color: "#14213D" }}
+            style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", borderRadius: 10, fontSize: 13.5, fontWeight: 600, color: "#241C35" }}
           >
             <CreditCard size={15} color="#5B6478" /> Betalinger
           </Link>
           <Link
             href="/inviter"
             onClick={() => setOpen(false)}
-            style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", borderRadius: 10, fontSize: 13.5, fontWeight: 600, color: "#14213D" }}
+            style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", borderRadius: 10, fontSize: 13.5, fontWeight: 600, color: "#241C35" }}
           >
             <Share2 size={15} color="#5B6478" /> Inviter venner
           </Link>
@@ -136,7 +136,7 @@ export default function UserMenu() {
             <Link
               href="/admin"
               onClick={() => setOpen(false)}
-              style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", borderRadius: 10, fontSize: 13.5, fontWeight: 600, color: "#14213D" }}
+              style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 12px", borderRadius: 10, fontSize: 13.5, fontWeight: 600, color: "#241C35" }}
             >
               <ShieldCheck size={15} color="#5B6478" /> Admin
             </Link>

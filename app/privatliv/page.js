@@ -24,7 +24,7 @@ export default function PrivacyPage() {
 
       <Section title="1. Dataansvarlig">
         <p>
-          [Firmanavn / dit fulde navn], [CVR-nummer, hvis relevant], [adresse], er dataansvarlig for behandlingen af personoplysninger på konsulentbud.dk. Ved spørgsmål kan du kontakte os via <a href="/kontakt" style={{ color: "#2A55E5", fontWeight: 700 }}>kontaktformularen</a>.
+          [Firmanavn / dit fulde navn], [CVR-nummer, hvis relevant], [adresse], er dataansvarlig for behandlingen af personoplysninger på konsulentbud.dk. Ved spørgsmål kan du kontakte os via <a href="/kontakt" style={{ color: "#7C3AED", fontWeight: 700 }}>kontaktformularen</a>.
         </p>
       </Section>
 
@@ -58,7 +58,7 @@ export default function PrivacyPage() {
 
       <Section title="6. Dine rettigheder">
         <p>
-          Du har efter databeskyttelsesforordningen (GDPR) ret til at få indsigt i, berigtiget, slettet eller udleveret (dataportabilitet) dine personoplysninger, samt ret til at gøre indsigelse mod behandlingen. Kontakt os via <a href="/kontakt" style={{ color: "#2A55E5", fontWeight: 700 }}>kontaktformularen</a> for at gøre brug af dine rettigheder. Du kan også klage til Datatilsynet (datatilsynet.dk).
+          Du har efter databeskyttelsesforordningen (GDPR) ret til at få indsigt i, berigtiget, slettet eller udleveret (dataportabilitet) dine personoplysninger, samt ret til at gøre indsigelse mod behandlingen. Kontakt os via <a href="/kontakt" style={{ color: "#7C3AED", fontWeight: 700 }}>kontaktformularen</a> for at gøre brug af dine rettigheder. Du kan også klage til Datatilsynet (datatilsynet.dk).
         </p>
       </Section>
 

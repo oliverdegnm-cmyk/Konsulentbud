@@ -36,17 +36,17 @@ export default function TopBar() {
           style={{
             width: 38,
             height: 38,
-            borderRadius: 11,
-            background: "#2A55E5",
+            borderRadius: "50%",
+            background: "#7C3AED",
             color: "#fff",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             fontWeight: 800,
-            fontSize: 15,
+            fontSize: 17,
           }}
         >
-          KB
+          K
         </div>
         <div style={{ fontSize: 19, fontWeight: 800 }}>Konsulentbud</div>
       </Link>
@@ -58,7 +58,7 @@ export default function TopBar() {
             borderRadius: 999,
             fontSize: 13.5,
             fontWeight: 700,
-            background: "#2A55E5",
+            background: "#7C3AED",
             color: "#fff",
             marginRight: 4,
           }}
@@ -74,8 +74,8 @@ export default function TopBar() {
               borderRadius: 999,
               fontSize: 13.5,
               fontWeight: 600,
-              background: pathname === l.href ? "#EEF2FF" : "transparent",
-              color: pathname === l.href ? "#1B3AA6" : "#5B6478",
+              background: pathname === l.href ? "#F3EEFC" : "transparent",
+              color: pathname === l.href ? "#5B21B6" : "#5B6478",
             }}
           >
             {l.label}
@@ -93,7 +93,7 @@ export default function TopBar() {
           <Link
             href="/login"
             className="kb-desktop-usermenu"
-            style={{ padding: "9px 16px", borderRadius: 999, fontSize: 13.5, fontWeight: 700, border: "1.5px solid #E4E8F0", color: "#14213D" }}
+            style={{ padding: "9px 16px", borderRadius: 999, fontSize: 13.5, fontWeight: 700, border: "1.5px solid #E4E8F0", color: "#241C35" }}
           >
             Log ind
           </Link>

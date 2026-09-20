@@ -12,8 +12,8 @@ export default function NotFound() {
           width: 64,
           height: 64,
           borderRadius: 18,
-          background: "#EEF2FF",
-          color: "#2A55E5",
+          background: "#F3EEFC",
+          color: "#7C3AED",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -30,13 +30,13 @@ export default function NotFound() {
       <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap", marginBottom: 40 }}>
         <Link
           href="/"
-          style={{ display: "inline-block", fontSize: 13.5, fontWeight: 700, padding: "11px 22px", borderRadius: 999, background: "#2A55E5", color: "#fff" }}
+          style={{ display: "inline-block", fontSize: 13.5, fontWeight: 700, padding: "11px 22px", borderRadius: 999, background: "#7C3AED", color: "#fff" }}
         >
           Til forsiden
         </Link>
         <Link
           href="/opgaver"
-          style={{ display: "inline-block", fontSize: 13.5, fontWeight: 700, padding: "11px 22px", borderRadius: 999, border: "1.5px solid #E4E8F0", color: "#14213D" }}
+          style={{ display: "inline-block", fontSize: 13.5, fontWeight: 700, padding: "11px 22px", borderRadius: 999, border: "1.5px solid #E4E8F0", color: "#241C35" }}
         >
           Se åbne opgaver
         </Link>
@@ -48,7 +48,7 @@ export default function NotFound() {
           <Link
             key={c.slug}
             href={`/kategori/${c.slug}`}
-            style={{ fontSize: 12.5, fontWeight: 600, padding: "8px 14px", borderRadius: 999, background: "#F5F7FB", color: "#14213D" }}
+            style={{ fontSize: 12.5, fontWeight: 600, padding: "8px 14px", borderRadius: 999, background: "#F5F7FB", color: "#241C35" }}
           >
             {c.name}
           </Link>

@@ -38,7 +38,7 @@ function MessagesInboxPage() {
       {threads === null && <div style={{ color: "#5B6478", fontSize: 13.5 }}>Henter beskeder…</div>}
       {threads && threads.length === 0 && (
         <div style={{ padding: "50px 10px", textAlign: "center", color: "#5B6478" }}>
-          <div style={{ fontSize: 16, fontWeight: 700, color: "#14213D", marginBottom: 6 }}>Ingen beskeder endnu</div>
+          <div style={{ fontSize: 16, fontWeight: 700, color: "#241C35", marginBottom: 6 }}>Ingen beskeder endnu</div>
           <div style={{ fontSize: 13.5 }}>
             Send en besked fra en opgaves detaljeside for at starte en samtale.
           </div>
@@ -56,8 +56,8 @@ function MessagesInboxPage() {
                 width: 40,
                 height: 40,
                 borderRadius: "50%",
-                background: "#EEF2FF",
-                color: "#1B3AA6",
+                background: "#F3EEFC",
+                color: "#5B21B6",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -77,7 +77,7 @@ function MessagesInboxPage() {
               <div
                 style={{
                   fontSize: 13,
-                  color: "#14213D",
+                  color: "#241C35",
                   marginTop: 4,
                   overflow: "hidden",
                   textOverflow: "ellipsis",

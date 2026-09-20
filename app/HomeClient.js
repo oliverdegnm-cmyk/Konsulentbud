@@ -147,12 +147,12 @@ export default function HomePage() {
           <div
             style={{
               display: "inline-block",
-              background: "#EEF2FF",
+              background: "#F3EEFC",
               padding: "6px 14px",
               borderRadius: 999,
               fontSize: 12.5,
               fontWeight: 700,
-              color: "#1B3AA6",
+              color: "#5B21B6",
               marginBottom: 16,
             }}
           >
@@ -164,7 +164,7 @@ export default function HomePage() {
             <span
               key={heroWordIndex}
               className={heroWordIsKontor ? "kb-hero-rotate-word kb-hero-rotate-word--pop" : "kb-hero-rotate-word"}
-              style={{ color: heroWordIsKontor ? "#2A55E5" : "inherit" }}
+              style={{ color: heroWordIsKontor ? "#7C3AED" : "inherit" }}
             >
               {heroWord}
             </span>
@@ -181,7 +181,7 @@ export default function HomePage() {
                 fontWeight: 700,
                 padding: "12px 24px",
                 borderRadius: 999,
-                background: "#2A55E5",
+                background: "#7C3AED",
                 color: "#fff",
               }}
             >
@@ -196,7 +196,7 @@ export default function HomePage() {
                 padding: "12px 24px",
                 borderRadius: 999,
                 border: "1.5px solid #E4E8F0",
-                color: "#14213D",
+                color: "#241C35",
               }}
             >
               Se åbne opgaver
@@ -239,7 +239,7 @@ export default function HomePage() {
         </div>
       </div>
 
-      <SectionBand title="Hvad skal du have løst?" sub="Skriv en kort titel - vi finder automatisk den rette kategori for dig." border="#14213D">
+      <SectionBand title="Hvad skal du have løst?" sub="Skriv en kort titel - vi finder automatisk den rette kategori for dig." border="#241C35">
       <div
         style={{
           display: "flex",
@@ -268,7 +268,7 @@ export default function HomePage() {
             padding: "13px 24px",
             borderRadius: 12,
             border: "none",
-            background: "#2A55E5",
+            background: "#7C3AED",
             color: "#fff",
             cursor: matchingWithAi ? "default" : "pointer",
             opacity: matchingWithAi ? 0.7 : 1,
@@ -298,10 +298,10 @@ export default function HomePage() {
                 borderRadius: 16,
                 background: "#fff",
                 border: "1.5px solid #E4E8F0",
-                color: "#14213D",
+                color: "#241C35",
               }}
             >
-              <span style={{ display: "flex", color: "#2A55E5", flex: "0 0 auto" }}>
+              <span style={{ display: "flex", color: "#7C3AED", flex: "0 0 auto" }}>
                 <CatIcon name={c.icon} size={16} />
               </span>
               <span>
@@ -322,7 +322,7 @@ export default function HomePage() {
               borderRadius: 999,
               background: "#fff",
               border: "1.5px solid #E4E8F0",
-              color: "#1B3AA6",
+              color: "#5B21B6",
               fontSize: 12.5,
               fontWeight: 700,
               cursor: "pointer",
@@ -386,8 +386,8 @@ export default function HomePage() {
                     width: 38,
                     height: 38,
                     borderRadius: 11,
-                    background: "#EEF2FF",
-                    color: "#2A55E5",
+                    background: "#F3EEFC",
+                    color: "#7C3AED",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -401,7 +401,7 @@ export default function HomePage() {
                   <div className="kb-task-meta" style={{ fontSize: 12, color: "#5B6478" }}>
                     {t.category}
                     {" · "}
-                    <span style={{ display: "inline-flex", alignItems: "center", gap: 3, fontWeight: 700, color: t.deadline === "Fleksibel" ? "#1AA37A" : getDeadlineLabel(t).urgent ? "#C0392B" : "#14213D" }}>
+                    <span style={{ display: "inline-flex", alignItems: "center", gap: 3, fontWeight: 700, color: t.deadline === "Fleksibel" ? "#1AA37A" : getDeadlineLabel(t).urgent ? "#C0392B" : "#241C35" }}>
                       <Clock size={11} /> {getDeadlineLabel(t).text}
                     </span>
                   </div>
@@ -418,7 +418,7 @@ export default function HomePage() {
                       <Link
                         href={`/bruger/${encodeURIComponent(t.postedBy)}`}
                         onClick={(e) => e.stopPropagation()}
-                        style={{ fontSize: 13, fontWeight: 700, color: "#2A55E5", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: 120 }}
+                        style={{ fontSize: 13, fontWeight: 700, color: "#7C3AED", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: 120 }}
                       >
                         {shortDisplayName(t.postedBy)}
                       </Link>
@@ -456,7 +456,7 @@ export default function HomePage() {
             borderRadius: 10,
             border: "1.5px solid #E4E8F0",
             background: "#fff",
-            color: "#14213D",
+            color: "#241C35",
           }}
         >
           Se alle opgaver →
@@ -471,7 +471,7 @@ export default function HomePage() {
             borderRadius: 10,
             border: "1.5px solid #E4E8F0",
             background: "#fff",
-            color: "#14213D",
+            color: "#241C35",
           }}
         >
           Se opgaver fra private →
@@ -486,7 +486,7 @@ export default function HomePage() {
             borderRadius: 10,
             border: "1.5px solid #E4E8F0",
             background: "#fff",
-            color: "#14213D",
+            color: "#241C35",
           }}
         >
           Se opgaver fra virksomheder →
@@ -501,7 +501,7 @@ export default function HomePage() {
         </>
       )}
 
-      <SectionBand title="Sådan fungerer det" sub="Tre trin, fra du opretter opgaven, til den er løst." tint="#14213D">
+      <SectionBand title="Sådan fungerer det" sub="Tre trin, fra du opretter opgaven, til den er løst." tint="#241C35">
       <div className="kb-grid-3" style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 28 }}>
         {[
           { num: "01", title: "Beskriv opgaven", text: "Skriv en kort titel og sæt dit budget. Det tager under to minutter, og det er gratis." },
@@ -509,7 +509,7 @@ export default function HomePage() {
           { num: "03", title: "Betal når du er tilfreds", text: "Beløbet holdes sikkert og frigives først, når opgaven er løst som aftalt." },
         ].map((step) => (
           <div key={step.num} style={{ background: "#fff", border: "1.5px solid #E4E8F0", borderRadius: 16, padding: 34 }}>
-            <div style={{ fontSize: 24, fontWeight: 800, color: "#DCE4FB", marginBottom: 10 }}>{step.num}</div>
+            <div style={{ fontSize: 24, fontWeight: 800, color: "#E4D9F7", marginBottom: 10 }}>{step.num}</div>
             <div style={{ fontSize: 15.5, fontWeight: 800, marginBottom: 8 }}>{step.title}</div>
             <p style={{ fontSize: 13.5, color: "#5B6478", lineHeight: 1.6, margin: 0 }}>{step.text}</p>
           </div>
@@ -519,8 +519,8 @@ export default function HomePage() {
 
       <div style={{ background: "#F5F7FB", borderRadius: 20, padding: "44px 48px", marginTop: 72 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 26 }}>
-          <ShieldCheck size={18} color="#2A55E5" />
-          <span style={{ fontSize: 12.5, fontWeight: 700, color: "#2A55E5" }}>Sikker betaling via Stripe</span>
+          <ShieldCheck size={18} color="#7C3AED" />
+          <span style={{ fontSize: 12.5, fontWeight: 700, color: "#7C3AED" }}>Sikker betaling via Stripe</span>
         </div>
         <h3 style={{ fontSize: 20, fontWeight: 800, marginBottom: 14 }}>Pengene bliver stående, til opgaven er løst</h3>
         <p style={{ fontSize: 13.5, color: "#5B6478", lineHeight: 1.6, margin: 0, maxWidth: 600 }}>
@@ -531,7 +531,7 @@ export default function HomePage() {
       {!name && (
         <div
           style={{
-            background: "#EEF2FF",
+            background: "#F3EEFC",
             borderRadius: 20,
             padding: "40px 44px",
             marginTop: 28,
@@ -544,8 +544,8 @@ export default function HomePage() {
         >
           <div style={{ maxWidth: 480 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
-              <Bell size={18} color="#2A55E5" />
-              <span style={{ fontSize: 12.5, fontWeight: 700, color: "#2A55E5" }}>Gå ikke glip af nye opgaver</span>
+              <Bell size={18} color="#7C3AED" />
+              <span style={{ fontSize: 12.5, fontWeight: 700, color: "#7C3AED" }}>Gå ikke glip af nye opgaver</span>
             </div>
             <h3 style={{ fontSize: 20, fontWeight: 800, marginBottom: 10 }}>Opret en gratis konto og hold øje med opgaver i dit felt</h3>
             <p style={{ fontSize: 13.5, color: "#5B6478", lineHeight: 1.6, margin: 0 }}>
@@ -554,7 +554,7 @@ export default function HomePage() {
           </div>
           <Link
             href="/login"
-            style={{ display: "inline-block", flexShrink: 0, fontSize: 14.5, fontWeight: 700, padding: "12px 24px", borderRadius: 999, background: "#2A55E5", color: "#fff" }}
+            style={{ display: "inline-block", flexShrink: 0, fontSize: 14.5, fontWeight: 700, padding: "12px 24px", borderRadius: 999, background: "#7C3AED", color: "#fff" }}
           >
             Opret gratis konto
           </Link>
@@ -566,13 +566,13 @@ export default function HomePage() {
         <div style={{ display: "flex", gap: 10, justifyContent: "center", flexWrap: "wrap" }}>
           <Link
             href="/opret"
-            style={{ display: "inline-block", fontSize: 14.5, fontWeight: 700, padding: "12px 24px", borderRadius: 999, background: "#2A55E5", color: "#fff" }}
+            style={{ display: "inline-block", fontSize: 14.5, fontWeight: 700, padding: "12px 24px", borderRadius: 999, background: "#7C3AED", color: "#fff" }}
           >
             Opret opgave gratis
           </Link>
           <Link
             href="/opgaver"
-            style={{ display: "inline-block", fontSize: 14.5, fontWeight: 700, padding: "12px 24px", borderRadius: 999, border: "1.5px solid #E4E8F0", color: "#14213D" }}
+            style={{ display: "inline-block", fontSize: 14.5, fontWeight: 700, padding: "12px 24px", borderRadius: 999, border: "1.5px solid #E4E8F0", color: "#241C35" }}
           >
             Se opgaver
           </Link>
@@ -587,7 +587,7 @@ export default function HomePage() {
 function TrustBadge({ icon: Icon, text }) {
   return (
     <div style={{ display: "flex", alignItems: "center", gap: 7, fontSize: 12.5, fontWeight: 600, color: "#5B6478" }}>
-      <Icon size={15} color="#2A55E5" />
+      <Icon size={15} color="#7C3AED" />
       {text}
     </div>
   );

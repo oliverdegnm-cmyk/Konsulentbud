@@ -26,7 +26,7 @@ export default async function CategoryPage({ params }) {
   if (!cat) {
     return (
       <div style={{ marginTop: 40, textAlign: "center", color: "#5B6478" }}>
-        Kategorien blev ikke fundet. <Link href="/opgaver" style={{ color: "#2A55E5", fontWeight: 700 }}>Se alle opgaver</Link>
+        Kategorien blev ikke fundet. <Link href="/opgaver" style={{ color: "#7C3AED", fontWeight: 700 }}>Se alle opgaver</Link>
       </div>
     );
   }
@@ -63,7 +63,7 @@ export default async function CategoryPage({ params }) {
       </div>
 
       <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 10 }}>
-        <div style={{ width: 46, height: 46, borderRadius: 14, background: "#EEF2FF", color: "#2A55E5", display: "flex", alignItems: "center", justifyContent: "center", flex: "0 0 auto" }}>
+        <div style={{ width: 46, height: 46, borderRadius: 14, background: "#F3EEFC", color: "#7C3AED", display: "flex", alignItems: "center", justifyContent: "center", flex: "0 0 auto" }}>
           <CatIcon name={cat.icon} size={22} />
         </div>
         <h1 style={{ fontSize: 26, fontWeight: 800, margin: 0 }}>{cat.name}</h1>
@@ -88,13 +88,13 @@ export default async function CategoryPage({ params }) {
       <div style={{ display: "flex", gap: 10, marginBottom: 32, flexWrap: "wrap" }}>
         <Link
           href={`/opret?category=${encodeURIComponent(cat.name)}`}
-          style={{ display: "inline-block", fontSize: 13.5, fontWeight: 700, padding: "11px 22px", borderRadius: 999, background: "#2A55E5", color: "#fff" }}
+          style={{ display: "inline-block", fontSize: 13.5, fontWeight: 700, padding: "11px 22px", borderRadius: 999, background: "#7C3AED", color: "#fff" }}
         >
           Opret en opgave i {cat.name}
         </Link>
         <Link
           href={`/opgaver?category=${encodeURIComponent(cat.name)}`}
-          style={{ display: "inline-block", fontSize: 13.5, fontWeight: 700, padding: "11px 22px", borderRadius: 999, border: "1.5px solid #E4E8F0", color: "#14213D" }}
+          style={{ display: "inline-block", fontSize: 13.5, fontWeight: 700, padding: "11px 22px", borderRadius: 999, border: "1.5px solid #E4E8F0", color: "#241C35" }}
         >
           Se alle opgaver →
         </Link>
@@ -110,7 +110,7 @@ export default async function CategoryPage({ params }) {
       {tasks.length === 0 ? (
         <p style={{ fontSize: 13.5, color: "#5B6478" }}>
           Vær den første til at{" "}
-          <Link href={`/opret?category=${encodeURIComponent(cat.name)}`} style={{ color: "#2A55E5", fontWeight: 700 }}>
+          <Link href={`/opret?category=${encodeURIComponent(cat.name)}`} style={{ color: "#7C3AED", fontWeight: 700 }}>
             oprette en opgave
           </Link>{" "}
           i denne kategori.
@@ -144,7 +144,7 @@ export default async function CategoryPage({ params }) {
             <Link
               key={c.slug}
               href={`/kategori/${c.slug}`}
-              style={{ fontSize: 12.5, fontWeight: 600, padding: "8px 14px", borderRadius: 999, background: "#F5F7FB", color: "#14213D" }}
+              style={{ fontSize: 12.5, fontWeight: 600, padding: "8px 14px", borderRadius: 999, background: "#F5F7FB", color: "#241C35" }}
             >
               {c.name}
             </Link>

@@ -46,7 +46,7 @@ export default function ContactClient({ initialKontaktFoto }) {
     <div style={{ marginTop: 24, marginBottom: 60 }}>
       <div style={{ maxWidth: 560 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 4 }}>
-          {isReport ? <ShieldAlert size={20} color="#C0392B" /> : <Mail size={20} color="#2A55E5" />}
+          {isReport ? <ShieldAlert size={20} color="#C0392B" /> : <Mail size={20} color="#7C3AED" />}
           <h2 style={{ fontSize: 24, fontWeight: 800 }}>{isReport ? "Rapportér mistænkelig aktivitet" : "Kontakt kundeservice"}</h2>
         </div>
         {isReport && (
@@ -93,7 +93,7 @@ export default function ContactClient({ initialKontaktFoto }) {
               <button
                 onClick={submit}
                 disabled={submitting}
-                style={{ marginTop: 18, fontSize: 14.5, fontWeight: 700, padding: "12px 24px", borderRadius: 12, border: "none", background: "#2A55E5", color: "#fff", cursor: submitting ? "default" : "pointer", opacity: submitting ? 0.6 : 1 }}
+                style={{ marginTop: 18, fontSize: 14.5, fontWeight: 700, padding: "12px 24px", borderRadius: 12, border: "none", background: "#7C3AED", color: "#fff", cursor: submitting ? "default" : "pointer", opacity: submitting ? 0.6 : 1 }}
               >
                 {submitting ? "Sender…" : "Send besked"}
               </button>

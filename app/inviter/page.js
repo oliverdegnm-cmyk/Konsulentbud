@@ -55,10 +55,10 @@ function InviterPage() {
         <div style={{ fontSize: 13, fontWeight: 700, color: "#5B6478", textTransform: "uppercase", letterSpacing: "0.04em", marginBottom: 12 }}>
           Din besked, klar til at dele
         </div>
-        <div style={{ background: "#F5F7FB", border: "1.5px dashed #E4E8F0", borderRadius: 10, padding: "14px 16px", fontSize: 13.5, color: "#14213D", lineHeight: 1.6, marginBottom: 20 }}>
+        <div style={{ background: "#F5F7FB", border: "1.5px dashed #E4E8F0", borderRadius: 10, padding: "14px 16px", fontSize: 13.5, color: "#241C35", lineHeight: 1.6, marginBottom: 20 }}>
           {shareText}
           <br />
-          <span style={{ color: "#2A55E5", fontWeight: 700 }}>{link || "Henter…"}</span>
+          <span style={{ color: "#7C3AED", fontWeight: 700 }}>{link || "Henter…"}</span>
         </div>
 
         <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
@@ -74,7 +74,7 @@ function InviterPage() {
                 padding: "12px 20px",
                 borderRadius: 10,
                 border: "none",
-                background: "#2A55E5",
+                background: "#7C3AED",
                 color: "#fff",
                 cursor: "pointer",
               }}
@@ -114,7 +114,7 @@ function InviterPage() {
               borderRadius: 10,
               border: "1.5px solid #E4E8F0",
               background: "#fff",
-              color: "#14213D",
+              color: "#241C35",
               cursor: link ? "pointer" : "default",
             }}
           >

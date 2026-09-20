@@ -33,7 +33,7 @@ export default function CookieBanner() {
 
   if (!visible) return null;
 
-  const primaryBtn = { fontSize: 13, fontWeight: 700, padding: "9px 18px", borderRadius: 10, border: "none", background: "#2A55E5", color: "#fff", cursor: "pointer", flex: "0 0 auto" };
+  const primaryBtn = { fontSize: 13, fontWeight: 700, padding: "9px 18px", borderRadius: 10, border: "none", background: "#7C3AED", color: "#fff", cursor: "pointer", flex: "0 0 auto" };
   const secondaryBtn = { fontSize: 13, fontWeight: 700, padding: "9px 18px", borderRadius: 10, border: "1.5px solid rgba(255,255,255,0.3)", background: "transparent", color: "#fff", cursor: "pointer", flex: "0 0 auto" };
 
   return (
@@ -46,7 +46,7 @@ export default function CookieBanner() {
         zIndex: 100,
         maxWidth: 560,
         margin: "0 auto",
-        background: "#14213D",
+        background: "#241C35",
         color: "#fff",
         borderRadius: 16,
         padding: "16px 20px",
