@@ -1,8 +1,8 @@
 import PostTaskClient from "./PostTaskClient";
 
 export const metadata = {
-  title: "Opret opgave - Konsulentbud",
-  description: "Beskriv din konsulentopgave, sæt et budget, og modtag bud fra kvalificerede konsulenter. Gratis at oprette.",
+  title: "Find en konsulent - Konsulentbud",
+  description: "Fortæl os, hvad du har brug for hjælp til, som privatperson eller virksomhed, og modtag forslag fra kvalificerede konsulenter. Gratis at oprette.",
   alternates: { canonical: "https://konsulentbud.dk/opret" },
 };
 

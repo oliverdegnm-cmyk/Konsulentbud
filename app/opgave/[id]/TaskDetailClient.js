@@ -467,12 +467,12 @@ export default function TaskDetailClient() {
                 </span>
               )}
               {task.scope && (
-                <span style={{ fontSize: 12, fontWeight: 700, color: "#5B6478", background: "#F5F7FB", padding: "6px 12px", borderRadius: 999 }}>
+                <span style={{ fontSize: 12, fontWeight: 700, color: "#5B6478", background: "#F5F7FB", padding: "6px 12px", borderRadius: 10, whiteSpace: "normal", wordBreak: "break-word", maxWidth: "100%" }}>
                   Omfang: {task.scope}
                 </span>
               )}
               {task.industryKnowledge && (
-                <span style={{ fontSize: 12, fontWeight: 700, color: "#5B6478", background: "#F5F7FB", padding: "6px 12px", borderRadius: 999 }}>
+                <span style={{ fontSize: 12, fontWeight: 700, color: "#5B6478", background: "#F5F7FB", padding: "6px 12px", borderRadius: 10, whiteSpace: "normal", wordBreak: "break-word", maxWidth: "100%" }}>
                   Branche: {task.industryKnowledge}
                 </span>
               )}

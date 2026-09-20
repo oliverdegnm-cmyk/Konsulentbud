@@ -70,6 +70,7 @@ function PostTaskPage() {
   const [locationType, setLocationType] = useState("remote"); // "remote" | "in_person"
   const [address, setAddress] = useState("");
   const [posterType, setPosterType] = useState("private");
+  const [typeChosen, setTypeChosen] = useState(false);
   const [companyName, setCompanyName] = useState("");
   const [cvrNumber, setCvrNumber] = useState("");
   const [cvrStatus, setCvrStatus] = useState(null); // null | "loading" | "found" | "error"
@@ -151,49 +152,78 @@ function PostTaskPage() {
     }
   }
 
+  if (!typeChosen) {
+    return (
+      <div>
+        <h2 style={{ fontSize: 24, marginTop: 24, marginBottom: 6 }}>Find en konsulent</h2>
+        <p style={{ color: "#5B6478", fontSize: 14, marginBottom: 24 }}>
+          Fortæl os, hvad du har brug for hjælp til, og hvem du søger på vegne af, så matcher vi dig med de rette konsulenter. Det er gratis.
+        </p>
+        <div style={{ background: "#fff", border: "1.5px solid #E4E8F0", borderRadius: 20, padding: 30, maxWidth: 660 }}>
+          <div style={{ fontSize: 12.5, fontWeight: 700, color: "#5B6478", marginBottom: 14 }}>Du søger som</div>
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+            <button
+              type="button"
+              onClick={() => {
+                setPosterType("private");
+                setTypeChosen(true);
+              }}
+              style={{
+                flex: "1 1 220px",
+                textAlign: "left",
+                padding: "20px 18px",
+                borderRadius: 14,
+                border: "1.5px solid #E4E8F0",
+                background: "#fff",
+                cursor: "pointer",
+              }}
+            >
+              <div style={{ fontSize: 15, fontWeight: 800, color: "#241C35", marginBottom: 6 }}>Privatperson</div>
+              <div style={{ fontSize: 12.5, color: "#5B6478", lineHeight: 1.5 }}>Du søger hjælp til en privat opgave eller et personligt projekt.</div>
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setPosterType("business");
+                setTypeChosen(true);
+              }}
+              style={{
+                flex: "1 1 220px",
+                textAlign: "left",
+                padding: "20px 18px",
+                borderRadius: 14,
+                border: "1.5px solid #E4E8F0",
+                background: "#fff",
+                cursor: "pointer",
+              }}
+            >
+              <div style={{ fontSize: 15, fontWeight: 800, color: "#241C35", marginBottom: 6 }}>Virksomhed</div>
+              <div style={{ fontSize: 12.5, color: "#5B6478", lineHeight: 1.5 }}>Du søger konsulentbistand på vegne af en virksomhed.</div>
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div>
-      <h2 style={{ fontSize: 24, marginTop: 24, marginBottom: 6 }}>Opret en opgave</h2>
+      <h2 style={{ fontSize: 24, marginTop: 24, marginBottom: 6 }}>Find en konsulent</h2>
       <p style={{ color: "#5B6478", fontSize: 14, marginBottom: 24 }}>
         Beskriv opgaven klart, så konsulenterne ved præcis, hvad de skal give forslag på. Det er gratis at oprette.
       </p>
       <div style={{ background: "#fff", border: "1.5px solid #E4E8F0", borderRadius: 20, padding: 30, maxWidth: 660 }}>
         <div style={{ marginBottom: 20 }}>
-          <label style={{ display: "block", fontSize: 12.5, fontWeight: 700, color: "#5B6478", marginBottom: 8 }}>Opretter du som</label>
-          <div style={{ display: "flex", gap: 8 }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: posterType === "business" ? 10 : 0 }}>
+            <div style={{ fontSize: 13, fontWeight: 700, color: "#5B6478" }}>
+              Du søger som <span style={{ color: "#5B21B6" }}>{posterType === "business" ? "virksomhed" : "privatperson"}</span>
+            </div>
             <button
               type="button"
-              onClick={() => setPosterType("private")}
-              style={{
-                flex: 1,
-                padding: "11px 0",
-                borderRadius: 10,
-                border: posterType === "private" ? "1.5px solid #7C3AED" : "1.5px solid #E4E8F0",
-                background: posterType === "private" ? "#F3EEFC" : "#fff",
-                color: posterType === "private" ? "#5B21B6" : "#5B6478",
-                fontSize: 13.5,
-                fontWeight: 700,
-                cursor: "pointer",
-              }}
+              onClick={() => setTypeChosen(false)}
+              style={{ fontSize: 12.5, fontWeight: 700, color: "#7C3AED", background: "none", border: "none", cursor: "pointer", padding: 0 }}
             >
-              Privatperson
-            </button>
-            <button
-              type="button"
-              onClick={() => setPosterType("business")}
-              style={{
-                flex: 1,
-                padding: "11px 0",
-                borderRadius: 10,
-                border: posterType === "business" ? "1.5px solid #7C3AED" : "1.5px solid #E4E8F0",
-                background: posterType === "business" ? "#F3EEFC" : "#fff",
-                color: posterType === "business" ? "#5B21B6" : "#5B6478",
-                fontSize: 13.5,
-                fontWeight: 700,
-                cursor: "pointer",
-              }}
-            >
-              Virksomhed
+              Skift
             </button>
           </div>
           {posterType === "business" && (
@@ -482,7 +512,7 @@ function PostTaskPage() {
 
 export default function PostTaskClient() {
   return (
-    <RequireAuth title="Log ind for at oprette en opgave" subtitle="Du skal være logget ind, før du kan oprette en opgave.">
+    <RequireAuth title="Log ind for at finde en konsulent" subtitle="Du skal være logget ind, før du kan oprette en opgave og finde en konsulent.">
       <PostTaskPage />
     </RequireAuth>
   );

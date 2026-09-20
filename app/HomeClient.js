@@ -185,7 +185,7 @@ export default function HomePage() {
                 color: "#fff",
               }}
             >
-              Opret opgave gratis
+              Find en konsulent gratis
             </Link>
             <Link
               href="/opgaver"
@@ -275,7 +275,7 @@ export default function HomePage() {
             flex: "0 0 auto",
           }}
         >
-          {matchingWithAi ? "Finder bedste kategori…" : "Opret opgave →"}
+          {matchingWithAi ? "Finder bedste kategori…" : "Find en konsulent →"}
         </button>
       </div>
       {matchedCategory && (
@@ -568,7 +568,7 @@ export default function HomePage() {
             href="/opret"
             style={{ display: "inline-block", fontSize: 14.5, fontWeight: 700, padding: "12px 24px", borderRadius: 999, background: "#7C3AED", color: "#fff" }}
           >
-            Opret opgave gratis
+            Find en konsulent gratis
           </Link>
           <Link
             href="/opgaver"

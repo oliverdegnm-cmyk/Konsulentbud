@@ -63,7 +63,7 @@ export default function TopBar() {
             marginRight: 4,
           }}
         >
-          Opret opgave
+          Find en konsulent
         </Link>
         {links.map((l) => (
           <Link
