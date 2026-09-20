@@ -1,0 +1,180 @@
+import { NextResponse } from "next/server";
+import { pool, ensureSchema } from "@/lib/db";
+import { geocodeArea } from "@/lib/geocode";
+import { notify } from "@/lib/notify";
+
+function mapTask(row, bids, attachments) {
+  return {
+    id: row.id,
+    caseNo: row.case_no,
+    title: row.title,
+    category: row.category,
+    budget: row.budget,
+    deadline: row.deadline,
+    deadlineDate: row.deadline_date,
+    description: row.description,
+    postedBy: row.posted_by,
+    posterType: row.poster_type,
+    companyName: row.company_name,
+    cvrNumber: row.cvr_number,
+    status: row.status,
+    acceptedBidId: row.accepted_bid_id,
+    acceptedAt: row.accepted_at,
+    completedAt: row.completed_at,
+    cancelledAt: row.cancelled_at,
+    paymentStatus: row.payment_status,
+    area: row.area,
+    locationType: row.location_type,
+    lat: row.lat,
+    lng: row.lng,
+    createdAt: row.created_at,
+    attachments: (attachments || []).map((a) => ({ id: a.id, url: a.url, filename: a.filename })),
+    bids: bids.map((b) => ({
+      id: b.id,
+      bidderName: b.bidder_name,
+      amount: b.amount,
+      amountValue: b.amount_value,
+      message: b.message,
+      contactEmail: b.contact_email,
+      createdAt: b.created_at,
+    })),
+  };
+}
+
+export async function GET() {
+  try {
+    await ensureSchema();
+    const { rows: taskRows } = await pool.query("SELECT * FROM tasks ORDER BY created_at DESC");
+
+    const needsGeocode = taskRows.filter((t) => t.area && (t.lat === null || t.lng === null)).slice(0, 3);
+    for (const t of needsGeocode) {
+      const coords = await geocodeArea(t.area);
+      if (coords) {
+        await pool.query("UPDATE tasks SET lat = $1, lng = $2 WHERE id = $3", [coords.lat, coords.lng, t.id]);
+        t.lat = coords.lat;
+        t.lng = coords.lng;
+      }
+    }
+
+    const { rows: bidRows } = await pool.query("SELECT * FROM bids ORDER BY created_at ASC");
+    const { rows: attRows } = await pool.query("SELECT * FROM task_attachments ORDER BY created_at ASC");
+
+    // Hentes samlet i ét opslag (i stedet for ét kald pr. opgave), så
+    // opgavestillerens stjerner/anmeldelser kan vises direkte på listerne.
+    const { rows: reviewRows } = await pool.query(
+      `SELECT reviewee_name, COALESCE(AVG(rating), 0)::float AS avg_rating, COUNT(*)::int AS count
+       FROM reviews GROUP BY reviewee_name`
+    );
+    const reviewsByName = {};
+    reviewRows.forEach((r) => {
+      reviewsByName[r.reviewee_name] = { avgRating: r.avg_rating, reviewCount: r.count };
+    });
+
+    const { rows: profileRows } = await pool.query("SELECT name, stripe_payouts_enabled FROM profiles");
+    const verifiedNames = new Set(profileRows.filter((p) => p.stripe_payouts_enabled).map((p) => p.name));
+
+    const tasks = taskRows.map((t) => {
+      const taskBids = bidRows.filter((b) => b.task_id === t.id);
+      const acceptedBid = taskBids.find((b) => b.id === t.accepted_bid_id);
+      return {
+        ...mapTask(t, taskBids, attRows.filter((a) => a.task_id === t.id)),
+        posterRating: reviewsByName[t.posted_by]?.avgRating ?? 0,
+        posterReviewCount: reviewsByName[t.posted_by]?.reviewCount ?? 0,
+        posterVerified: verifiedNames.has(t.posted_by),
+        completedByName: acceptedBid?.bidder_name ?? null,
+        completedByRating: acceptedBid ? reviewsByName[acceptedBid.bidder_name]?.avgRating ?? 0 : 0,
+        completedByReviewCount: acceptedBid ? reviewsByName[acceptedBid.bidder_name]?.reviewCount ?? 0 : 0,
+      };
+    });
+    return NextResponse.json({ tasks });
+  } catch (err) {
+    return NextResponse.json({ error: "Kunne ikke hente opgaver. Tjek at DATABASE_URL er sat korrekt." }, { status: 500 });
+  }
+}
+
+export async function POST(request) {
+  try {
+    await ensureSchema();
+    const body = await request.json();
+    const { title, category, budget, deadline, deadlineDate, description, postedBy, area, locationType, address, attachments, posterType, companyName, cvrNumber } = body;
+
+    if (!title?.trim() || !description?.trim() || !postedBy?.trim()) {
+      return NextResponse.json({ error: "Titel, beskrivelse og navn er påkrævet." }, { status: 400 });
+    }
+
+    // Sagsnummeret bygges på opgavens egen unikke id (som Postgres selv sikrer
+    // aldrig genbruges, heller ikke efter sletninger) - IKKE en optælling af
+    // antal opgaver, som gav kollisioner, når ældre opgaver blev slettet.
+    const coords = locationType === "in_person" ? await geocodeArea(area) : null;
+
+    const { rows } = await pool.query(
+      `INSERT INTO tasks (case_no, title, category, budget, deadline, deadline_date, description, posted_by, area, lat, lng, poster_type, company_name, cvr_number, location_type, address)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16) RETURNING *`,
+      [
+        "midlertidig",
+        title.trim(),
+        category || "Andet",
+        budget?.trim() || "Ikke angivet",
+        deadlineDate ? null : deadline?.trim() || "Fleksibel",
+        deadlineDate || null,
+        description.trim(),
+        postedBy.trim(),
+        locationType === "in_person" ? area?.trim() || null : null,
+        coords?.lat ?? null,
+        coords?.lng ?? null,
+        posterType === "business" ? "business" : "private",
+        posterType === "business" ? companyName?.trim() || null : null,
+        posterType === "business" ? cvrNumber?.replace(/\D/g, "") || null : null,
+        locationType === "in_person" ? "in_person" : "remote",
+        locationType === "in_person" ? address?.trim() || null : null,
+      ]
+    );
+    const task = rows[0];
+    const caseNo = `K-2026-${String(100 + task.id).padStart(3, "0")}`;
+    await pool.query("UPDATE tasks SET case_no = $1 WHERE id = $2", [caseNo, task.id]);
+    task.case_no = caseNo;
+
+    let attRows = [];
+    if (Array.isArray(attachments) && attachments.length > 0) {
+      for (const a of attachments) {
+        if (!a?.url || !a?.filename) continue;
+        const { rows: inserted } = await pool.query(
+          "INSERT INTO task_attachments (task_id, url, filename, uploaded_by) VALUES ($1, $2, $3, $4) RETURNING *",
+          [task.id, a.url, a.filename, postedBy.trim()]
+        );
+        attRows.push(inserted[0]);
+      }
+    }
+
+    // Gør opgaven synlig for konsulenter, der selv har markeret kategorien på
+    // deres profil - kombinerer bud-flowet med de profiler, konsulenterne har
+    // udfyldt, så nye opgaver finder frem til de rette uden at nogen skal lede.
+    try {
+      const { rows: matches } = await pool.query(
+        `SELECT name FROM profiles
+         WHERE listed = true
+           AND categories IS NOT NULL
+           AND (',' || categories || ',') LIKE '%,' || $1 || ',%'
+           AND name <> $2`,
+        [task.category, postedBy.trim()]
+      );
+      const origin = request.headers.get("origin") || undefined;
+      for (const m of matches) {
+        await notify(
+          m.name,
+          "task_match",
+          task.id,
+          `Ny opgave i "${task.category}": ${task.title}`,
+          origin
+        );
+      }
+    } catch (err) {
+      console.error("Kunne ikke matche opgaven til konsulenter:", err.message);
+    }
+
+    return NextResponse.json({ task: mapTask(task, [], attRows) }, { status: 201 });
+  } catch (err) {
+    console.error("Kunne ikke oprette opgave:", err);
+    return NextResponse.json({ error: "Kunne ikke oprette opgaven." }, { status: 500 });
+  }
+}

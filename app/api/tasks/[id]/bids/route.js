@@ -1,0 +1,58 @@
+import { NextResponse } from "next/server";
+import { pool, ensureSchema } from "@/lib/db";
+import { formatKr } from "@/lib/fees";
+import { notify } from "@/lib/notify";
+
+function parseAmount(input) {
+  if (typeof input === "number") return Math.round(input);
+  const digits = String(input || "").replace(/[^\d]/g, "");
+  return digits ? parseInt(digits, 10) : null;
+}
+
+export async function POST(request, { params }) {
+  try {
+    await ensureSchema();
+    const id = Number(params.id);
+    const body = await request.json();
+    const { bidderName, amount, message, contactEmail } = body;
+
+    const amountValue = parseAmount(amount);
+    if (!bidderName?.trim() || !amountValue || amountValue <= 0) {
+      return NextResponse.json({ error: "Navn og et gyldigt beløb i kr er påkrævet." }, { status: 400 });
+    }
+
+    const { rows: taskRows } = await pool.query("SELECT id, status, title, posted_by FROM tasks WHERE id = $1", [id]);
+    if (taskRows.length === 0) {
+      return NextResponse.json({ error: "Opgaven findes ikke." }, { status: 404 });
+    }
+    if (taskRows[0].status !== "open") {
+      return NextResponse.json({ error: "Opgaven er allerede tildelt og modtager ikke flere bud." }, { status: 400 });
+    }
+
+    // Kræver Stripe forbundet, før man kan byde - så vinderen altid rent faktisk
+    // kan modtage betaling, og ingen bliver fristet til at aftale betaling uden om platformen.
+    const { rows: profileRows } = await pool.query("SELECT stripe_payouts_enabled FROM profiles WHERE name = $1", [bidderName.trim()]);
+    if (!profileRows[0]?.stripe_payouts_enabled) {
+      return NextResponse.json(
+        { error: "Du skal forbinde Stripe under din profil, før du kan afgive bud - så er du sikker på at kunne modtage betaling, hvis du vinder." },
+        { status: 400 }
+      );
+    }
+
+    const { rows } = await pool.query(
+      `INSERT INTO bids (task_id, bidder_name, amount, amount_value, message, contact_email)
+       VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
+      [id, bidderName.trim(), formatKr(amountValue), amountValue, message?.trim() || "Ingen besked tilføjet.", contactEmail?.trim() || null]
+    );
+
+    await notify(taskRows[0].posted_by, "new_bid", id, `${bidderName.trim()} bød ${formatKr(amountValue)} på "${taskRows[0].title}".`);
+
+    const b = rows[0];
+    return NextResponse.json(
+      { bid: { id: b.id, bidderName: b.bidder_name, amount: b.amount, amountValue: b.amount_value, message: b.message, contactEmail: b.contact_email } },
+      { status: 201 }
+    );
+  } catch (err) {
+    return NextResponse.json({ error: "Kunne ikke afgive bud." }, { status: 500 });
+  }
+}

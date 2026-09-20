@@ -1,0 +1,777 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { upload } from "@vercel/blob/client";
+import { useName } from "@/lib/NameContext";
+import RequireAuth from "@/components/RequireAuth";
+import Stars from "@/components/Stars";
+import { LEVELS, RATE_CATEGORIES, rateCategoryFor, formatKr } from "@/lib/fees";
+import { CATS } from "@/lib/categories";
+import { FileText, Upload, X, Globe, Linkedin, ShieldCheck, User, Briefcase, CheckCircle2, AlertTriangle, ChevronRight, Sparkles, Award, Camera, Percent, ListChecks, Eye, EyeOff } from "lucide-react";
+
+function initials(name) {
+  return name.split(" ").map((w) => w[0]).join("").slice(0, 2).toUpperCase();
+}
+
+// Skalerer og komprimerer et uploadet profilbillede i browseren, før det sendes -
+// et lille, kvadratisk billede fylder meget mindre end et rå foto fra en telefon.
+async function optimizeAvatar(file, maxDim = 512, quality = 0.85) {
+  if (!file.type?.startsWith("image/") || file.type === "image/svg+xml") return file;
+  try {
+    const bitmap = await createImageBitmap(file);
+    const scale = Math.min(1, maxDim / Math.max(bitmap.width, bitmap.height));
+    const width = Math.round(bitmap.width * scale);
+    const height = Math.round(bitmap.height * scale);
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(bitmap, 0, 0, width, height);
+    const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/jpeg", quality));
+    if (!blob) return file;
+    const newName = file.name.replace(/\.[^.]+$/, "") + ".jpg";
+    return new File([blob], newName, { type: "image/jpeg" });
+  } catch (err) {
+    console.error("Kunne ikke optimere profilbilledet, uploader originalen i stedet:", err);
+    return file;
+  }
+}
+
+function SectionCard({ icon: Icon, title, children }) {
+  return (
+    <div style={{ background: "#fff", border: "1.5px solid #E4E8F0", borderRadius: 18, padding: 24, marginBottom: 18 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 9, marginBottom: 16 }}>
+        <div style={{ width: 30, height: 30, borderRadius: 9, background: "#EEF2FF", color: "#2A55E5", display: "flex", alignItems: "center", justifyContent: "center", flex: "0 0 auto" }}>
+          <Icon size={15} />
+        </div>
+        <div style={{ fontSize: 14.5, fontWeight: 800 }}>{title}</div>
+      </div>
+      {children}
+    </div>
+  );
+}
+
+const inputStyle = { width: "100%", fontSize: 14, padding: "12px 14px", border: "1.5px solid #E4E8F0", borderRadius: 10, background: "#F5F7FB" };
+const labelStyle = { display: "block", fontSize: 12.5, fontWeight: 700, color: "#5B6478", marginBottom: 6 };
+
+function FileSlot({ label, hint, fileUrl, filename, uploading, error, onChange, onRemove }) {
+  return (
+    <div style={{ marginBottom: 18 }}>
+      <label style={labelStyle}>{label}</label>
+      {hint && <p style={{ fontSize: 11.5, color: "#9AA2B1", margin: "0 0 8px" }}>{hint}</p>}
+      {fileUrl ? (
+        <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 16px", background: "#F5F7FB", borderRadius: 12 }}>
+          <FileText size={18} color="#2A55E5" />
+          <a href={fileUrl} target="_blank" rel="noopener noreferrer" style={{ flex: 1, fontSize: 13.5, fontWeight: 700, color: "#2A55E5" }}>
+            {filename || "Dokument.pdf"}
+          </a>
+          <button
+            onClick={onRemove}
+            title="Fjern dokument"
+            style={{ width: 30, height: 30, borderRadius: 8, border: "1.5px solid #FDECEC", background: "#fff", color: "#C0392B", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer" }}
+          >
+            <X size={13} />
+          </button>
+        </div>
+      ) : (
+        <label
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 8,
+            fontSize: 13,
+            fontWeight: 700,
+            padding: "10px 18px",
+            borderRadius: 10,
+            border: "1.5px solid #E4E8F0",
+            color: "#14213D",
+            cursor: uploading ? "default" : "pointer",
+            opacity: uploading ? 0.6 : 1,
+          }}
+        >
+          <Upload size={14} />
+          {uploading ? "Uploader…" : "Upload PDF"}
+          <input type="file" accept="application/pdf" onChange={onChange} disabled={uploading} style={{ display: "none" }} />
+        </label>
+      )}
+      {error && <div style={{ marginTop: 8, fontSize: 12.5, color: "#C0392B" }}>{error}</div>}
+    </div>
+  );
+}
+
+function ProfilePage() {
+  const { name, emailVerified, refresh } = useName();
+  const [avatarUrl, setAvatarUrl] = useState(null);
+  const [avatarUploading, setAvatarUploading] = useState(false);
+  const [avatarError, setAvatarError] = useState("");
+  const [bio, setBio] = useState("");
+  const [skills, setSkills] = useState("");
+  const [job, setJob] = useState("");
+  const [education, setEducation] = useState("");
+  const [certifications, setCertifications] = useState("");
+  const [websiteUrl, setWebsiteUrl] = useState("");
+  const [videoCallUrl, setVideoCallUrl] = useState("");
+  const [linkedinUrl, setLinkedinUrl] = useState("");
+  const [categories, setCategories] = useState([]);
+  const [listed, setListed] = useState(true);
+  const [saved, setSaved] = useState(false);
+  const [loaded, setLoaded] = useState(false);
+
+  const [cvUrl, setCvUrl] = useState(null);
+  const [cvFilename, setCvFilename] = useState(null);
+  const [cvUploading, setCvUploading] = useState(false);
+  const [cvError, setCvError] = useState("");
+
+  const [portfolioUrl, setPortfolioUrl] = useState(null);
+  const [portfolioFilename, setPortfolioFilename] = useState(null);
+  const [portfolioUploading, setPortfolioUploading] = useState(false);
+  const [portfolioError, setPortfolioError] = useState("");
+
+  const [level, setLevel] = useState(null);
+
+  useEffect(() => {
+    if (!name) return;
+    fetch(`/api/profiles/${encodeURIComponent(name)}`)
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.profile) {
+          setBio(data.profile.bio || "");
+          setSkills(data.profile.skills || "");
+          setJob(data.profile.job || "");
+          setEducation(data.profile.education || "");
+          setCertifications(data.profile.certifications || "");
+          setWebsiteUrl(data.profile.websiteUrl || "");
+          setVideoCallUrl(data.profile.videoCallUrl || "");
+          setLinkedinUrl(data.profile.linkedinUrl || "");
+          setCvUrl(data.profile.cvUrl || null);
+          setCvFilename(data.profile.cvFilename || null);
+          setPortfolioUrl(data.profile.portfolioUrl || null);
+          setPortfolioFilename(data.profile.portfolioFilename || null);
+          setAvatarUrl(data.profile.avatarUrl || null);
+          setCategories(data.profile.categories || []);
+          setListed(data.profile.listed !== false);
+        }
+        setLoaded(true);
+      });
+    fetch(`/api/helpers/${encodeURIComponent(name)}`)
+      .then((r) => r.json())
+      .then((data) => !data.error && setLevel(data));
+  }, [name]);
+
+  async function save() {
+    setSaved(false);
+    await fetch(`/api/profiles/${encodeURIComponent(name)}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ bio, skills, job, education, certifications, websiteUrl, linkedinUrl, videoCallUrl, categories, listed }),
+    });
+    setSaved(true);
+    setTimeout(() => setSaved(false), 2500);
+  }
+
+  function makeFileHandler({ setUploading, setError, setUrl, setFilename, field }) {
+    return async function handleChange(e) {
+      const file = e.target.files?.[0];
+      if (!file) return;
+      if (file.type !== "application/pdf") {
+        setError("Kun PDF-filer er understøttet.");
+        e.target.value = "";
+        return;
+      }
+      setUploading(true);
+      setError("");
+      try {
+        const blob = await upload(file.name, file, {
+          access: "public",
+          handleUploadUrl: "/api/upload",
+          clientPayload: JSON.stringify({ purpose: "cv" }),
+        });
+        await fetch(`/api/profiles/${encodeURIComponent(name)}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(field === "cv" ? { cvUrl: blob.url, cvFilename: file.name } : { portfolioUrl: blob.url, portfolioFilename: file.name }),
+        });
+        setUrl(blob.url);
+        setFilename(file.name);
+      } catch (err) {
+        setError(err?.message || "Kunne ikke uploade filen. Prøv igen.");
+      }
+      setUploading(false);
+      e.target.value = "";
+    };
+  }
+
+  const handleCvChange = makeFileHandler({ setUploading: setCvUploading, setError: setCvError, setUrl: setCvUrl, setFilename: setCvFilename, field: "cv" });
+  const handlePortfolioChange = makeFileHandler({ setUploading: setPortfolioUploading, setError: setPortfolioError, setUrl: setPortfolioUrl, setFilename: setPortfolioFilename, field: "portfolio" });
+
+  async function handleAvatarChange(e) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type?.startsWith("image/")) {
+      setAvatarError("Kun billedfiler er understøttet.");
+      e.target.value = "";
+      return;
+    }
+    setAvatarUploading(true);
+    setAvatarError("");
+    try {
+      const optimized = await optimizeAvatar(file);
+      const blob = await upload(optimized.name, optimized, {
+        access: "public",
+        handleUploadUrl: "/api/upload",
+        clientPayload: JSON.stringify({ purpose: "image" }),
+      });
+      await fetch(`/api/profiles/${encodeURIComponent(name)}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ avatarUrl: blob.url }),
+      });
+      setAvatarUrl(blob.url);
+      await refresh();
+    } catch (err) {
+      setAvatarError(err?.message || "Kunne ikke uploade billedet. Prøv igen.");
+    }
+    setAvatarUploading(false);
+    e.target.value = "";
+  }
+
+  async function removeAvatar() {
+    if (!confirm("Fjern dit profilbillede?")) return;
+    await fetch(`/api/profiles/${encodeURIComponent(name)}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ avatarUrl: null }),
+    });
+    setAvatarUrl(null);
+    await refresh();
+  }
+
+  const [parsingCv, setParsingCv] = useState(false);
+  const [parseCvError, setParseCvError] = useState("");
+  const [parseCvDone, setParseCvDone] = useState(false);
+
+  async function autoFillFromCv() {
+    setParsingCv(true);
+    setParseCvError("");
+    setParseCvDone(false);
+    try {
+      const res = await fetch("/api/profiles/" + encodeURIComponent(name) + "/parse-cv", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ cvUrl }),
+      });
+      const data = await res.json();
+      if (data.error) {
+        setParseCvError(data.error);
+        setParsingCv(false);
+        return;
+      }
+      const e = data.extracted || {};
+      // Overskriver kun felter, der allerede er tomme, så vi ikke risikerer at
+      // slette noget, brugeren selv har skrevet.
+      if (e.bio && !bio.trim()) setBio(e.bio);
+      if (e.job && !job.trim()) setJob(e.job);
+      if (e.education && !education.trim()) setEducation(e.education);
+      if (e.certifications && !certifications.trim()) setCertifications(e.certifications);
+      if (e.skills && !skills.trim()) setSkills(e.skills);
+      setParseCvDone(true);
+    } catch (err) {
+      setParseCvError("Kunne ikke analysere CV'et. Prøv igen.");
+    }
+    setParsingCv(false);
+  }
+
+  async function removeCv() {
+    if (!confirm("Fjern CV'et fra din profil?")) return;
+    await fetch(`/api/profiles/${encodeURIComponent(name)}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ cvUrl: null, cvFilename: null }),
+    });
+    setCvUrl(null);
+    setCvFilename(null);
+  }
+
+  async function removePortfolio() {
+    if (!confirm("Fjern portfolioet fra din profil?")) return;
+    await fetch(`/api/profiles/${encodeURIComponent(name)}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ portfolioUrl: null, portfolioFilename: null }),
+    });
+    setPortfolioUrl(null);
+    setPortfolioFilename(null);
+  }
+
+  if (!loaded) return <div style={{ padding: "60px 0", textAlign: "center", color: "#5B6478" }}>Henter profil…</div>;
+
+  const fields = [bio, skills, job || education, websiteUrl || linkedinUrl, cvUrl || portfolioUrl];
+  const filledCount = fields.filter((f) => f && f.toString().trim()).length;
+  const completeness = Math.round((filledCount / fields.length) * 100);
+  const showLevel = level && level.level.label !== "Standard";
+
+  return (
+    <div style={{ marginTop: 24, maxWidth: 680, marginBottom: 60 }}>
+      {/* Header */}
+      <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 20 }}>
+        <div style={{ position: "relative", flex: "0 0 auto" }}>
+          <div
+            style={{
+              width: 64,
+              height: 64,
+              borderRadius: "50%",
+              background: avatarUrl ? "#F5F7FB" : "linear-gradient(135deg, #2A55E5, #6D8CF0)",
+              color: "#fff",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontWeight: 800,
+              fontSize: 22,
+              overflow: "hidden",
+              opacity: avatarUploading ? 0.5 : 1,
+            }}
+          >
+            {avatarUrl ? (
+              <img src={avatarUrl} alt={name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            ) : (
+              initials(name)
+            )}
+          </div>
+          <label
+            title="Upload profilbillede"
+            style={{
+              position: "absolute",
+              bottom: -2,
+              right: -2,
+              width: 26,
+              height: 26,
+              borderRadius: "50%",
+              background: "#fff",
+              border: "1.5px solid #E4E8F0",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: avatarUploading ? "default" : "pointer",
+              boxShadow: "0 2px 6px -2px rgba(20,33,61,0.3)",
+            }}
+          >
+            <Camera size={12} color="#2A55E5" />
+            <input type="file" accept="image/*" onChange={handleAvatarChange} disabled={avatarUploading} style={{ display: "none" }} />
+          </label>
+        </div>
+        <div>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <h2 style={{ fontSize: 22, fontWeight: 800, margin: 0 }}>{name}</h2>
+            {level?.stripePayoutsEnabled && (
+              <span
+                title="Identitet bekræftet via Stripe"
+                style={{ display: "inline-flex", alignItems: "center", gap: 4, fontSize: 10.5, fontWeight: 700, color: "#1AA37A", background: "#E9F9F1", padding: "3px 9px", borderRadius: 999 }}
+              >
+                <ShieldCheck size={11} /> Verificeret
+              </span>
+            )}
+          </div>
+          <p style={{ fontSize: 13, color: "#5B6478", margin: "3px 0 0" }}>
+            Vises for andre, når de ser dine bud eller opgaver.{" "}
+            <Link href={`/bruger/${encodeURIComponent(name)}`} style={{ color: "#2A55E5", fontWeight: 700 }}>
+              Se din profil, som andre ser den →
+            </Link>
+          </p>
+          {avatarUploading && <p style={{ fontSize: 11.5, color: "#9AA2B1", margin: "4px 0 0" }}>Uploader billede…</p>}
+          {avatarUrl && !avatarUploading && (
+            <button
+              onClick={removeAvatar}
+              style={{ marginTop: 4, fontSize: 11.5, fontWeight: 700, color: "#C0392B", background: "none", border: "none", textDecoration: "underline", cursor: "pointer", padding: 0 }}
+            >
+              Fjern profilbillede
+            </button>
+          )}
+          {avatarError && <p style={{ fontSize: 11.5, color: "#C0392B", margin: "4px 0 0" }}>{avatarError}</p>}
+        </div>
+      </div>
+
+      {!emailVerified && <EmailVerifyBanner />}
+
+      {completeness < 100 && (
+        <div style={{ background: "#EEF2FF", border: "1.5px solid #DCE4FB", borderRadius: 16, padding: "16px 20px", marginBottom: 20 }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 10 }}>
+            <div style={{ fontSize: 13.5, fontWeight: 700 }}>Din profil er {completeness}% udfyldt</div>
+            <div style={{ fontSize: 12, color: "#5B6478" }}>En komplet profil får flere bud valgt</div>
+          </div>
+          <div style={{ height: 8, borderRadius: 999, background: "#fff", overflow: "hidden" }}>
+            <div style={{ height: "100%", width: `${completeness}%`, background: "#2A55E5", borderRadius: 999, transition: "width .3s ease" }} />
+          </div>
+        </div>
+      )}
+
+      {/* Stats */}
+      {level && (
+        <div style={{ display: "flex", background: "#fff", border: "1.5px solid #E4E8F0", borderRadius: 16, padding: "18px 8px", marginBottom: 20 }}>
+          {showLevel && <StatBlock label="Niveau" value={level.level.label} border />}
+          <StatBlock label="Udførelsesrate" value={`${level.completionRate}%`} border />
+          <Link href={`/bruger/${encodeURIComponent(name)}`} style={{ flex: 1, textAlign: "center", cursor: "pointer" }}>
+            <div style={{ fontSize: 16, fontWeight: 800, display: "inline-flex", alignItems: "center", gap: 4 }}>
+              {level.reviewCount > 0 ? (
+                <>
+                  <Stars value={level.avgRating} /> ({level.reviewCount})
+                </>
+              ) : (
+                "Ingen endnu"
+              )}
+              <ChevronRight size={13} color="#9AA2B1" />
+            </div>
+            <div style={{ fontSize: 11, color: "#5B6478", marginTop: 2 }}>Anmeldelser</div>
+          </Link>
+        </div>
+      )}
+
+      <ServiceLevelCard level={level} />
+
+      <SectionCard icon={User} title="Om dig">
+        <label style={labelStyle}>Beskrivelse</label>
+        <textarea
+          value={bio}
+          onChange={(e) => setBio(e.target.value)}
+          placeholder="Kort om dig selv - baggrund, personlighed, hvad du brænder for."
+          style={{ ...inputStyle, minHeight: 80, resize: "vertical" }}
+        />
+
+        <label style={{ ...labelStyle, marginTop: 16 }}>Kompetencer</label>
+        <input
+          value={skills}
+          onChange={(e) => setSkills(e.target.value)}
+          placeholder="f.eks. Bogføring, Excel, kundeservice, dansk/engelsk oversættelse"
+          style={inputStyle}
+        />
+        <div style={{ fontSize: 11.5, color: "#9AA2B1", marginTop: 6 }}>Adskil gerne med komma.</div>
+
+        <label style={{ ...labelStyle, marginTop: 16 }}>Job / erhvervserfaring</label>
+        <textarea
+          value={job}
+          onChange={(e) => setJob(e.target.value)}
+          placeholder="Tidligere og nuværende jobs, opgaver, konkrete resultater."
+          style={{ ...inputStyle, minHeight: 80, resize: "vertical" }}
+        />
+
+        <label style={{ ...labelStyle, marginTop: 16 }}>Uddannelse</label>
+        <textarea
+          value={education}
+          onChange={(e) => setEducation(e.target.value)}
+          placeholder="Uddannelser fra universitet/skole."
+          style={{ ...inputStyle, minHeight: 80, resize: "vertical" }}
+        />
+
+        <label style={{ ...labelStyle, marginTop: 16 }}>LinkedIn</label>
+        <div style={{ position: "relative", marginBottom: 16 }}>
+          <Linkedin size={15} color="#9AA2B1" style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)" }} />
+          <input
+            value={linkedinUrl}
+            onChange={(e) => setLinkedinUrl(e.target.value)}
+            placeholder="https://linkedin.com/in/dit-navn"
+            style={{ ...inputStyle, paddingLeft: 38 }}
+          />
+        </div>
+
+        <label style={labelStyle}>Egen hjemmeside</label>
+        <div style={{ position: "relative" }}>
+          <Globe size={15} color="#9AA2B1" style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)" }} />
+          <input
+            value={websiteUrl}
+            onChange={(e) => setWebsiteUrl(e.target.value)}
+            placeholder="https://dinhjemmeside.dk"
+            style={{ ...inputStyle, paddingLeft: 38 }}
+          />
+        </div>
+        <div style={{ fontSize: 11.5, color: "#9AA2B1", marginTop: 6 }}>Vises som klikbare links på din offentlige profil.</div>
+
+        <label style={{ ...labelStyle, marginTop: 16 }}>Videoopkald-link</label>
+        <input
+          value={videoCallUrl}
+          onChange={(e) => setVideoCallUrl(e.target.value)}
+          placeholder="https://meet.google.com/... eller dit Zoom/Teams-link"
+          style={inputStyle}
+        />
+        <div style={{ fontSize: 11.5, color: "#9AA2B1", marginTop: 6 }}>
+          Indsæt dit eget faste møde-link (Zoom, Teams, Google Meet). Vises kun for modparten, når I har en aktiv opgave sammen.
+        </div>
+      </SectionCard>
+
+      <SectionCard icon={ListChecks} title="Hvad kan du hjælpe med?">
+        <div style={{ fontSize: 13, color: "#5B6478", marginBottom: 14, lineHeight: 1.5 }}>
+          Vælg de kategorier, du tager opgaver inden for. Du bliver vist i{" "}
+          <Link href="/konsulenter" style={{ color: "#2A55E5", fontWeight: 600 }}>
+            konsulentoversigten
+          </Link>{" "}
+          under dem, og får besked, så snart en ny opgave i en af dem bliver oprettet.
+        </div>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 16 }}>
+          {CATS.filter((c) => c.slug !== "andet").map((c) => {
+            const active = categories.includes(c.name);
+            return (
+              <button
+                key={c.slug}
+                type="button"
+                onClick={() =>
+                  setCategories((prev) => (active ? prev.filter((n) => n !== c.name) : [...prev, c.name]))
+                }
+                style={{
+                  padding: "8px 14px",
+                  borderRadius: 999,
+                  fontSize: 12.5,
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  border: active ? "1.5px solid #2A55E5" : "1.5px solid #E4E8F0",
+                  background: active ? "#EEF2FF" : "#fff",
+                  color: active ? "#1B3AA6" : "#5B6478",
+                }}
+              >
+                {c.name}
+              </button>
+            );
+          })}
+        </div>
+
+        <label
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            padding: "12px 14px",
+            borderRadius: 12,
+            background: "#F5F7FB",
+            cursor: "pointer",
+          }}
+        >
+          <input type="checkbox" checked={listed} onChange={(e) => setListed(e.target.checked)} style={{ width: 16, height: 16 }} />
+          {listed ? <Eye size={15} color="#5B6478" /> : <EyeOff size={15} color="#5B6478" />}
+          <span style={{ fontSize: 13, color: "#14213D" }}>
+            Vis min profil i konsulentoversigten, og giv mig besked om nye matchende opgaver
+          </span>
+        </label>
+      </SectionCard>
+
+      <SectionCard icon={Award} title="Kurser / certificeringer">
+        <textarea
+          value={certifications}
+          onChange={(e) => setCertifications(e.target.value)}
+          placeholder="f.eks. 2024: Onlinekursus i forhandling, Wharton, University of Pennsylvania"
+          style={{ ...inputStyle, minHeight: 90, resize: "vertical" }}
+        />
+        <div style={{ fontSize: 11.5, color: "#9AA2B1", marginTop: 6 }}>Sæt gerne hvert kursus på sin egen linje.</div>
+      </SectionCard>
+
+      <button
+        onClick={save}
+        style={{ fontSize: 14.5, fontWeight: 700, padding: "12px 24px", borderRadius: 12, border: "none", background: "#2A55E5", color: "#fff", cursor: "pointer", marginBottom: 18 }}
+      >
+        Gem profil
+      </button>
+      {saved && (
+        <div style={{ marginTop: -8, marginBottom: 18, padding: "11px 14px", borderRadius: 10, fontSize: 12.5, fontWeight: 700, background: "#E9F9F1", color: "#1AA37A", display: "flex", alignItems: "center", gap: 6 }}>
+          <CheckCircle2 size={14} /> Profil gemt.
+        </div>
+      )}
+
+      <SectionCard icon={Briefcase} title="Dokumenter">
+        <div style={{ display: "flex", gap: 8, padding: "10px 14px", background: "#FFF1E0", borderRadius: 10, marginBottom: 18, fontSize: 12, color: "#B5610E", lineHeight: 1.55 }}>
+          <AlertTriangle size={14} style={{ flex: "0 0 auto", marginTop: 1 }} />
+          <span>
+            Dokumenterne er synlige for alle besøgende. Undgå CPR-nummer, fødselsdato og fuld adresse - kun rigtige PDF-filer accepteres (maks. 10 MB), af hensyn til sikkerheden.
+          </span>
+        </div>
+
+        <FileSlot
+          label="CV"
+          fileUrl={cvUrl}
+          filename={cvFilename}
+          uploading={cvUploading}
+          error={cvError}
+          onChange={handleCvChange}
+          onRemove={removeCv}
+        />
+        {cvUrl && (
+          <div style={{ marginTop: -10, marginBottom: 20 }}>
+            <button
+              onClick={autoFillFromCv}
+              disabled={parsingCv}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 7,
+                fontSize: 12.5,
+                fontWeight: 700,
+                padding: "9px 16px",
+                borderRadius: 999,
+                border: "1.5px solid #DCE4FB",
+                background: "#EEF2FF",
+                color: "#1B3AA6",
+                cursor: parsingCv ? "default" : "pointer",
+                opacity: parsingCv ? 0.6 : 1,
+              }}
+            >
+              <Sparkles size={13} />
+              {parsingCv ? "Analyserer CV…" : "Udfyld profil automatisk fra CV"}
+            </button>
+            {parseCvDone && (
+              <div style={{ fontSize: 12, color: "#1AA37A", marginTop: 8, fontWeight: 600 }}>
+                ✓ Felterne ovenfor er udfyldt ud fra CV'et - tjek dem gerne igennem, og husk at gemme.
+              </div>
+            )}
+            {parseCvError && <div style={{ fontSize: 12, color: "#C0392B", marginTop: 8 }}>{parseCvError}</div>}
+          </div>
+        )}
+        <FileSlot
+          label="Portfolio"
+          hint="Eksempler på tidligere arbejde, f.eks. et samlet PDF-udsnit af opgaver du har løst."
+          fileUrl={portfolioUrl}
+          filename={portfolioFilename}
+          uploading={portfolioUploading}
+          error={portfolioError}
+          onChange={handlePortfolioChange}
+          onRemove={removePortfolio}
+        />
+      </SectionCard>
+    </div>
+  );
+}
+
+function StatBlock({ label, value, border }) {
+  return (
+    <div style={{ flex: 1, textAlign: "center", borderRight: border ? "1px solid #F0F1F5" : "none" }}>
+      <div style={{ fontSize: 16, fontWeight: 800 }}>{value}</div>
+      <div style={{ fontSize: 11, color: "#5B6478", marginTop: 2 }}>{label}</div>
+    </div>
+  );
+}
+
+// Viser servicegebyr-niveauet (Standard/Sølv/Guld/Platin, se lib/fees.js) med hvor langt
+// brugeren er fra næste niveau, plus hele niveau-stigen - samme idé som Handyhands egen
+// "handyhander-niveauer"-side, så det er tydeligt at man betaler 20 % som udgangspunkt,
+// og hvad der skal til for at betale mindre.
+function ServiceLevelCard({ level }) {
+  if (!level) return null;
+  const { level: current, earnings30d, completionRate: rate } = level;
+  const rateCat = rateCategoryFor(rate);
+  const idx = LEVELS.findIndex((l) => l.key === current.key);
+  const next = idx > 0 ? LEVELS[idx - 1] : null; // LEVELS er sorteret bedst → dårligst
+
+  return (
+    <SectionCard icon={Percent} title="Dit serviceniveau">
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, marginBottom: 6 }}>
+        <div style={{ fontSize: 15, fontWeight: 800 }}>{current.label}</div>
+        <div style={{ fontSize: 12.5, fontWeight: 800, color: "#2A55E5", background: "#EEF2FF", padding: "4px 12px", borderRadius: 999, whiteSpace: "nowrap" }}>
+          {current.feePercent}% i servicegebyr
+        </div>
+      </div>
+      <p style={{ fontSize: 12, color: "#9AA2B1", margin: "0 0 4px" }}>
+        Servicegebyret trækkes automatisk af det, du vinder et bud på - jo højere niveau, jo mindre gebyr.
+      </p>
+
+      {next ? (
+        <div style={{ fontSize: 12.5, color: "#5B6478", marginTop: 8, lineHeight: 1.6 }}>
+          {earnings30d < next.minEarnings ? (
+            <>
+              Du mangler <b style={{ color: "#14213D" }}>{formatKr(next.minEarnings - earnings30d)}</b> i indtjening de seneste 30 dage for at nå{" "}
+              <b style={{ color: "#14213D" }}>{next.label}</b> ({next.feePercent}% i gebyr).
+            </>
+          ) : (
+            <>
+              Din indtjening de seneste 30 dage rækker allerede til <b style={{ color: "#14213D" }}>{next.label}</b>.
+            </>
+          )}
+          {rateCat.order < next.minRateOrder && (
+            <>
+              {" "}Din udførelsesrate skal desuden op på mindst {RATE_CATEGORIES.find((r) => r.order === next.minRateOrder)?.min}% (
+              {RATE_CATEGORIES.find((r) => r.order === next.minRateOrder)?.label}) - du ligger på {rate}% ({rateCat.label}) lige nu.
+            </>
+          )}
+        </div>
+      ) : (
+        <div style={{ fontSize: 12.5, color: "#1AA37A", fontWeight: 700, marginTop: 8 }}>Du har nået det højeste niveau. 🎉</div>
+      )}
+
+      <div style={{ marginTop: 16, borderTop: "1px solid #F0F1F5", paddingTop: 12 }}>
+        {[...LEVELS].reverse().map((l) => {
+          const rc = RATE_CATEGORIES.find((r) => r.order === l.minRateOrder);
+          const isCurrent = l.key === current.key;
+          return (
+            <div
+              key={l.key}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                gap: 10,
+                padding: "9px 12px",
+                borderRadius: 10,
+                background: isCurrent ? "#EEF2FF" : "transparent",
+                marginBottom: 4,
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                {isCurrent && <CheckCircle2 size={14} color="#2A55E5" style={{ flex: "0 0 auto" }} />}
+                <span style={{ fontSize: 13, fontWeight: isCurrent ? 800 : 600, color: isCurrent ? "#1B3AA6" : "#14213D" }}>{l.label}</span>
+              </div>
+              <div style={{ fontSize: 11.5, color: "#5B6478", textAlign: "right" }}>
+                <span style={{ fontWeight: 800, color: "#14213D" }}>{l.feePercent}%</span> gebyr
+                {l.minEarnings > 0 && (
+                  <>
+                    {" "}
+                    · fra {formatKr(l.minEarnings)}/30 dage · {rc?.label}+
+                  </>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </SectionCard>
+  );
+}
+
+function EmailVerifyBanner() {
+  const { name } = useName();
+  const [sent, setSent] = useState(false);
+  const [error, setError] = useState("");
+
+  async function resend() {
+    setError("");
+    const res = await fetch("/api/auth/resend", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name }),
+    });
+    const data = await res.json();
+    if (data.error) {
+      setError(data.error);
+      return;
+    }
+    setSent(true);
+  }
+
+  return (
+    <div style={{ background: "#FFF1E0", border: "1.5px solid #F5D9AE", borderRadius: 14, padding: "14px 18px", marginBottom: 20, fontSize: 13.5, color: "#B5610E" }}>
+      <b>Din email er ikke bekræftet endnu.</b> Tjek din indbakke for et bekræftelseslink.
+      {!sent ? (
+        <button
+          onClick={resend}
+          style={{ marginLeft: 8, fontSize: 12.5, fontWeight: 700, color: "#B5610E", background: "none", border: "none", textDecoration: "underline", cursor: "pointer", padding: 0 }}
+        >
+          Send igen
+        </button>
+      ) : (
+        <span style={{ marginLeft: 8, fontWeight: 700 }}>✓ Sendt igen</span>
+      )}
+      {error && <div style={{ marginTop: 6 }}>{error}</div>}
+    </div>
+  );
+}
+
+export default function ProfilePageWrapper() {
+  return (
+    <RequireAuth>
+      <ProfilePage />
+    </RequireAuth>
+  );
+}

@@ -1,0 +1,97 @@
+import Link from "next/link";
+import { CATS, categoryBySlug } from "@/lib/categories";
+
+const POPULAR_SLUGS = ["strategi-ledelsesraadgivning", "it-digitalisering", "oekonomi-finans", "hr-organisation", "ai-automatisering"];
+
+// Sættes til null, hvis der endnu ikke findes en Trustpilot-virksomhedsside -
+// linket udelades så helt i stedet for at pege på en side, der ikke findes.
+const TRUSTPILOT_URL = "https://www.trustpilot.com/review/konsulentbud.dk";
+
+export default function Footer() {
+  return (
+    <footer style={{ background: "#14213D", borderRadius: 24, padding: "40px 36px", margin: "60px 0 24px", color: "#fff" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "1.3fr 1fr 1fr", gap: 32 }} className="kb-grid-3">
+        <div>
+          <div style={{ fontSize: 15, fontWeight: 800, marginBottom: 12 }}>Konsulentbud</div>
+          <p style={{ fontSize: 13, color: "#B7C0DA", lineHeight: 1.65, maxWidth: 320 }}>
+            Konsulentbud er en dansk platform, hvor du kan finde hjælp til konsulentopgaver af enhver slags, eller selv byde og tjene penge på det, du er god til.
+          </p>
+        </div>
+
+        <div>
+          <div style={{ fontSize: 12.5, fontWeight: 700, color: "#B7C0DA", textTransform: "uppercase", letterSpacing: "0.04em", marginBottom: 14 }}>
+            Udforsk
+          </div>
+          <FooterLink href="/opgaver">Opgaver</FooterLink>
+          <FooterLink href="/konsulenter">Konsulenter</FooterLink>
+          <FooterLink href="/opret">Opret opgave</FooterLink>
+          <FooterLink href="/hvordan-det-virker">Hvordan fungerer det?</FooterLink>
+          <FooterLink href="/blog">Blog</FooterLink>
+          <FooterLink href="/faq">Ofte stillede spørgsmål</FooterLink>
+          <FooterLink href="/kontakt">Kontakt</FooterLink>
+          <FooterLink href="/vilkaar">Vilkår og betingelser</FooterLink>
+          <FooterLink href="/privatliv">Privatlivspolitik</FooterLink>
+        </div>
+
+        <div>
+          <div style={{ fontSize: 12.5, fontWeight: 700, color: "#B7C0DA", textTransform: "uppercase", letterSpacing: "0.04em", marginBottom: 14 }}>
+            Populære kategorier
+          </div>
+          {POPULAR_SLUGS.map((slug) => {
+            const cat = categoryBySlug(slug);
+            return (
+              <FooterLink key={slug} href={`/kategori/${slug}`}>
+                {cat.name}
+              </FooterLink>
+            );
+          })}
+          <FooterLink href="/opgaver">Alle kategorier</FooterLink>
+        </div>
+      </div>
+
+      <div
+        style={{
+          borderTop: "1px solid rgba(255,255,255,0.12)",
+          marginTop: 32,
+          paddingTop: 20,
+          fontSize: 12,
+          color: "#8A93B0",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: 16,
+          flexWrap: "wrap",
+          textAlign: "center",
+        }}
+      >
+        <span>© {new Date().getFullYear()} Konsulentbud</span>
+        {TRUSTPILOT_URL && (
+          <a
+            href={TRUSTPILOT_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "#D6DCEC", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6 }}
+          >
+            ★ Se vores anmeldelser på Trustpilot
+          </a>
+        )}
+        <a
+          href="https://stripe.com"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{ color: "#D6DCEC", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 6 }}
+        >
+          🔒 Betalinger sikret af Stripe
+        </a>
+      </div>
+    </footer>
+  );
+}
+
+function FooterLink({ href, children }) {
+  return (
+    <Link href={href} style={{ display: "block", fontSize: 13, color: "#D6DCEC", marginBottom: 10 }}>
+      {children}
+    </Link>
+  );
+}
